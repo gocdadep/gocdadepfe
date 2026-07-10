@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import AdSenseScript from "@/components/AdSenseScript";
-import CookieBanner from "@/components/cookie-banner";
-import ToastContainer from "@/components/toast/ToastContainer";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -17,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "EnStudey - Nền tảng học tập cá nhân hóa",
-  description: "Chinh phục TOEIC & IELTS thông minh cùng trợ lý AI",
+  title: "gocdadep.com — Tra cứu thành phần mỹ phẩm & Phân tích hoạt chất",
+  description: "Phân tích bảng thành phần mỹ phẩm chi tiết, kiểm tra độ an toàn hoạt chất và tra cứu sản phẩm miễn phí cho người Việt.",
   icons: {
     icon: "/favicon-cropped.png",
     apple: "/favicon-cropped.png",
@@ -32,16 +30,14 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
+      lang="vi"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
       suppressHydrationWarning
       data-scroll-behavior="smooth"
     >
       <head>
-        {/* Tích hợp Google AdSense Auto Ads có điều kiện lọc trang */}
-        <AdSenseScript />
       </head>
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col bg-background text-foreground">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -49,8 +45,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           {children}
-          <CookieBanner />
-          <ToastContainer />
+          <AdSenseScript />
         </ThemeProvider>
       </body>
     </html>

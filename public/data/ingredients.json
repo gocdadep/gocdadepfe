@@ -1,0 +1,32 @@
+[
+  {
+    "id": "niacinamide",
+    "name": "Niacinamide",
+    "aliases": ["Vitamin B3", "Nicotinamide"],
+    "safetyLevel": "SAFE",
+    "functions": ["moisturizing", "soothing", "brightening"],
+    "skinTypes": ["all", "oily"],
+    "warnings": null,
+    "description": "Một dạng của Vitamin B3 giúp se khít lỗ chân lông, cải thiện làn da không đều màu và củng cố hàng rào bảo vệ da."
+  },
+  {
+    "id": "alcohol-denat",
+    "name": "Alcohol Denat.",
+    "aliases": ["Denatured Alcohol", "Cồn khô"],
+    "safetyLevel": "CAUTION",
+    "functions": ["solvent", "viscosity controlling"],
+    "skinTypes": ["oily"],
+    "warnings": "Có thể gây khô da và kích ứng mạnh cho da nhạy cảm khi đứng ở đầu bảng thành phần.",
+    "description": "Cồn khô được làm biến tính, giúp sản phẩm thấm nhanh và khô thoáng."
+  },
+  {
+    "id": "methylparaben",
+    "name": "Methylparaben",
+    "aliases": ["E218"],
+    "safetyLevel": "DANGER",
+    "functions": ["preservative"],
+    "skinTypes": ["all"],
+    "warnings": "Chất bảo quan nhóm Paraben, có thể gây dị ứng cho da quá nhạy cảm.",
+    "description": "Chất bảo quản kháng nấm và vi khuẩn phổ biến trong mỹ phẩm."
+  }
+]

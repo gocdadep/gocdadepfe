@@ -1,0 +1,22 @@
+[
+  {
+    "id": "serum-b3-laroche-posay",
+    "name": "Mela B3 Serum",
+    "brand": "La Roche-Posay",
+    "category": "serum",
+    "ingredientIds": ["niacinamide", "alcohol-denat"],
+    "shopeeUrl": "https://shopee.vn/La-Roche-Posay-Mela-B3-Serum-i.12345",
+    "affiliateSubId": "gocdadep_product",
+    "image": "/images/products/mela-b3.webp"
+  },
+  {
+    "id": "kem-chong-nang-lo-kem-tron",
+    "name": "Kem chống nắng Whitening Cream",
+    "brand": "OEM",
+    "category": "sunscreen",
+    "ingredientIds": ["methylparaben"],
+    "shopeeUrl": "https://shopee.vn/Kem-Chong-Nang-OEM-i.67890",
+    "affiliateSubId": "gocdadep_product",
+    "image": "/images/products/kem-tron.webp"
+  }
+]

@@ -90,7 +90,7 @@ export default function Header({ isStatic = false }: HeaderProps) {
     const isActive = pathname.startsWith(path);
     const baseClass = "text-xs font-bold uppercase tracking-wider transition-colors ";
     if (isActive) {
-      return baseClass + "text-slate-950 dark:text-white border-b-2 border-orange-500 pb-1";
+      return baseClass + "text-slate-950 dark:text-white border-b-2 border-accent pb-1";
     }
     return baseClass + "text-slate-500 hover:text-slate-950 dark:hover:text-white pb-1 border-b-2 border-transparent";
   };
@@ -120,24 +120,21 @@ export default function Header({ isStatic = false }: HeaderProps) {
       {/* Placeholder để tránh Layout Shift khi Header ở trạng thái fixed */}
       {!isStatic && <div className="h-16 shrink-0" />}
       <header className={headerClass} data-testid="header-container">
-        <nav className="max-w-6xl mx-auto px-6 h-full flex items-center justify-between">
+        <nav className="max-w-5xl mx-auto px-6 h-full flex items-center justify-between">
           <div className="flex items-center gap-8">
-            <Link href="/" className="flex items-center gap-2 font-bold text-2xl text-slate-950 dark:text-white tracking-tight" data-testid="link-logo">
-              <Image src="/icon-transparent.png" alt="EnStudey Logo" width={32} height={32} className="w-8 h-8" />
-              <span>EnStudey</span>
+            <Link href="/" className="flex items-center gap-2 font-bold text-lg text-slate-950 dark:text-white tracking-tight" data-testid="link-logo">
+              <Image src="/favicon-cropped.png" alt="Góc Da Đẹp Logo" width={28} height={28} className="w-7 h-7 rounded-lg" />
+              <span>Góc Da Đẹp</span>
             </Link>
             <div className="hidden md:flex gap-6">
-              <Link href="/tin-tuc" className={getLinkClass("/tin-tuc")} data-testid="link-news">
-                Tin tức học thuật
+              <Link href="/analyzer" className={getLinkClass("/analyzer")} data-testid="link-analyzer">
+                Phân tích bảng chất
               </Link>
-              <Link href="/tinh-diem-tot-nghiep" className={getLinkClass("/tinh-diem-tot-nghiep")} data-testid="link-calc">
-                Công cụ tính điểm
+              <Link href="/products" className={getLinkClass("/products")} data-testid="link-products">
+                Tra cứu sản phẩm
               </Link>
-              <Link href="/tra-cuu-tuyen-sinh" className={getLinkClass("/tra-cuu-tuyen-sinh")} data-testid="link-univ">
-                Tra cứu trường đại học
-              </Link>
-              <Link href="/tram-sac-nang-luong" className={getLinkClass("/tram-sac-nang-luong")} data-testid="link-donors">
-                Trạm sạc 🥤
+              <Link href="/blog" className={getLinkClass("/blog")} data-testid="link-blog">
+                Cẩm nang
               </Link>
             </div>
           </div>

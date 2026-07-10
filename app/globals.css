@@ -8,46 +8,47 @@ html {
 }
 
 :root {
-  --background: #f8fafc; /* bg-slate-50 */
-  --foreground: #0f172a; /* text-slate-950 */
+  --background: #FAFAFA;
+  --foreground: #1A1A1A;
   --card: #ffffff;
-  --card-border: #f1f5f9; /* border-slate-100 */
+  --card-border: #f1f5f9;
   
-  --accent: #ea580c; /* bg-orange-600 */
+  --accent: #0F5132;
   --accent-foreground: #ffffff;
+  --shopee: #EE4D2D;
 
-  --success-bg: #ecfdf5; /* bg-emerald-50 */
-  --success-text: #047857; /* text-emerald-700 */
+  --success-bg: #E8F5E9;
+  --success-text: #2E7D32;
 
-  --error-bg: #fef2f2; /* bg-red-50 */
-  --error-text: #b91c1c; /* text-red-700 */
+  --error-bg: #FFEBEE;
+  --error-text: #C62828;
 
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
 :root.dark {
-  --background: #09090b; /* bg-zinc-950 */
-  --foreground: #f4f4f5; /* text-zinc-100 */
-  --card: #18181b; /* bg-zinc-900 */
-  --card-border: #27272a; /* border-zinc-800 */
+  --background: #09090b;
+  --foreground: #f4f4f5;
+  --card: #18181b;
+  --card-border: #27272a;
 
-  --success-bg: rgba(6, 78, 59, 0.3); /* bg-emerald-950/30 */
-  --success-text: #34d399; /* text-emerald-400 */
+  --success-bg: rgba(46, 125, 50, 0.2);
+  --success-text: #81c784;
 
-  --error-bg: rgba(127, 29, 29, 0.3); /* bg-red-950/30 */
-  --error-text: #f87171; /* text-red-400 */
+  --error-bg: rgba(198, 40, 40, 0.2);
+  --error-text: #e57373;
 }
 
 :root.light {
-  --background: #f8fafc;
-  --foreground: #0f172a;
+  --background: #FAFAFA;
+  --foreground: #1A1A1A;
   --card: #ffffff;
   --card-border: #f1f5f9;
-  --success-bg: #ecfdf5;
-  --success-text: #047857;
-  --error-bg: #fef2f2;
-  --error-text: #b91c1c;
+  --success-bg: #E8F5E9;
+  --success-text: #2E7D32;
+  --error-bg: #FFEBEE;
+  --error-text: #C62828;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -56,10 +57,10 @@ html {
     --foreground: #f4f4f5;
     --card: #18181b;
     --card-border: #27272a;
-    --success-bg: rgba(6, 78, 59, 0.3);
-    --success-text: #34d399;
-    --error-bg: rgba(127, 29, 29, 0.3);
-    --error-text: #f87171;
+    --success-bg: rgba(46, 125, 50, 0.2);
+    --success-text: #81c784;
+    --error-bg: rgba(198, 40, 40, 0.2);
+    --error-text: #e57373;
   }
 }
 
@@ -70,6 +71,7 @@ html {
   --color-card-border: var(--card-border);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
+  --color-shopee: var(--shopee);
   --color-success-bg: var(--success-bg);
   --color-success-text: var(--success-text);
   --color-error-bg: var(--error-bg);
