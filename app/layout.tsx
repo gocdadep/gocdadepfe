@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { ThemeProvider } from "@/components/theme-provider";
 import AdSenseScript from "@/components/AdSenseScript";
 import "./globals.css";
 
@@ -38,15 +37,8 @@ export default function RootLayout({
       <head>
       </head>
       <body className="min-h-full flex flex-col bg-background text-foreground">
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          {children}
-          <AdSenseScript />
-        </ThemeProvider>
+        {children}
+        <AdSenseScript />
       </body>
     </html>
   );

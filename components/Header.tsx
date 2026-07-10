@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import ThemeToggle from "@/components/ThemeToggle";
+
 
 interface HeaderProps {
   isStatic?: boolean;
@@ -139,7 +139,6 @@ export default function Header({ isStatic = false }: HeaderProps) {
             </div>
           </div>
           <div className="flex items-center gap-4">
-            <ThemeToggle />
           </div>
         </nav>
       </header>
