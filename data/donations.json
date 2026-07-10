@@ -1,0 +1,56 @@
+{
+  "bank_name": "MBBank",
+  "account_name": "NGUYEN DUC TAM",
+  "account_no": "70026112004",
+  "qr_template_url": "/qr-donate.webp",
+  "donors": [
+    {
+      "name": "Nguyễn Minh T***",
+      "amount": "20.000đ"
+    },
+    {
+      "name": "Lê Trọng T***",
+      "amount": "50.000đ"
+    },
+    {
+      "name": "Trần Linh C***",
+      "amount": "10.000đ"
+    },
+    {
+      "name": "Phạm Minh H***",
+      "amount": "30.000đ"
+    },
+    {
+      "name": "Nguyễn Hoàng A***",
+      "amount": "100.000đ"
+    },
+    {
+      "name": "Vũ Mai P***",
+      "amount": "22.000đ"
+    },
+    {
+      "name": "Người bạn giấu tên",
+      "amount": "15.000đ"
+    },
+    {
+      "name": "Đặng Quốc B***",
+      "amount": "40.000đ"
+    },
+    {
+      "name": "Hoàng Yến N***",
+      "amount": "25.000đ"
+    },
+    {
+      "name": "Đỗ Minh K***",
+      "amount": "19.000đ"
+    },
+    {
+      "name": "Trịnh Khánh H***",
+      "amount": "30.000đ"
+    },
+    {
+      "name": "Bùi Tiến D***",
+      "amount": "20.000đ"
+    }
+  ]
+}

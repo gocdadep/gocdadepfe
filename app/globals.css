@@ -1,0 +1,255 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+html {
+  scroll-behavior: smooth;
+}
+
+:root {
+  --background: #f8fafc; /* bg-slate-50 */
+  --foreground: #0f172a; /* text-slate-950 */
+  --card: #ffffff;
+  --card-border: #f1f5f9; /* border-slate-100 */
+  
+  --accent: #ea580c; /* bg-orange-600 */
+  --accent-foreground: #ffffff;
+
+  --success-bg: #ecfdf5; /* bg-emerald-50 */
+  --success-text: #047857; /* text-emerald-700 */
+
+  --error-bg: #fef2f2; /* bg-red-50 */
+  --error-text: #b91c1c; /* text-red-700 */
+
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+:root.dark {
+  --background: #09090b; /* bg-zinc-950 */
+  --foreground: #f4f4f5; /* text-zinc-100 */
+  --card: #18181b; /* bg-zinc-900 */
+  --card-border: #27272a; /* border-zinc-800 */
+
+  --success-bg: rgba(6, 78, 59, 0.3); /* bg-emerald-950/30 */
+  --success-text: #34d399; /* text-emerald-400 */
+
+  --error-bg: rgba(127, 29, 29, 0.3); /* bg-red-950/30 */
+  --error-text: #f87171; /* text-red-400 */
+}
+
+:root.light {
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --card: #ffffff;
+  --card-border: #f1f5f9;
+  --success-bg: #ecfdf5;
+  --success-text: #047857;
+  --error-bg: #fef2f2;
+  --error-text: #b91c1c;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) {
+    --background: #09090b;
+    --foreground: #f4f4f5;
+    --card: #18181b;
+    --card-border: #27272a;
+    --success-bg: rgba(6, 78, 59, 0.3);
+    --success-text: #34d399;
+    --error-bg: rgba(127, 29, 29, 0.3);
+    --error-text: #f87171;
+  }
+}
+
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-border: var(--card-border);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-success-bg: var(--success-bg);
+  --color-success-text: var(--success-text);
+  --color-error-bg: var(--error-bg);
+  --color-error-text: var(--error-text);
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+/* Anti-CLS AdSense Container System */
+.ad-container {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  border-radius: 0.75rem;
+}
+
+.ad-container::before {
+  content: 'QUẢNG CÁO';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 10px;
+  font-weight: 500;
+  color: #94a3b8;
+  opacity: 0.3;
+  letter-spacing: 0.05em;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.ad-h-banner {
+  min-height: 90px;
+}
+
+.ad-v-block {
+  min-height: 250px;
+}
+
+.ad-sidebar {
+  min-height: 600px;
+}
+
+/* Zone highlights for University Matcher */
+.safe-zone {
+  background-color: rgba(34, 197, 94, 0.08) !important;
+  border-left: 4px solid #22c55e !important;
+}
+.dark .safe-zone {
+  background-color: rgba(34, 197, 94, 0.15) !important;
+}
+
+.fight-zone {
+  background-color: rgba(245, 158, 11, 0.08) !important;
+  border-left: 4px solid #f59e0b !important;
+}
+.dark .fight-zone {
+  background-color: rgba(245, 158, 11, 0.15) !important;
+}
+
+.risk-zone {
+  background-color: rgba(239, 68, 68, 0.08) !important;
+  border-left: 4px solid #ef4444 !important;
+}
+.dark .risk-zone {
+  background-color: rgba(239, 68, 68, 0.15) !important;
+}
+
+/* Tối ưu hóa hình ảnh trong bài viết Markdown để tránh chói mắt ở Dark Mode (ngoại trừ logo thương hiệu) */
+.dark img:not([src*="icon-transparent.png"]) {
+  filter: opacity(.8) brightness(.9);
+  transition: filter 0.3s ease;
+}
+
+/* Tối ưu hóa độ chói của các quảng cáo banner Google AdSense trong Dark Mode */
+.dark .adsbygoogle {
+  filter: grayscale(10%) brightness(90%);
+  transition: filter 0.3s ease;
+}
+
+/* Hide Scrollbar Utility */
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Dark Mode Overrides thủ công cho các trang prose và widget affiliate */
+.dark body {
+  background-color: #09090b !important;
+  color: #f4f4f5 !important;
+}
+
+.dark .prose {
+  color: #d4d4d8 !important;
+}
+
+.dark .prose h1,
+.dark .prose h2,
+.dark .prose h3,
+.dark .prose h4,
+.dark .prose strong {
+  color: #ffffff !important;
+}
+
+.dark .prose a {
+  color: #f97316 !important;
+}
+
+.dark .prose li {
+  color: #d4d4d8 !important;
+}
+
+/* Fix màu chữ cho các widget affiliate trong Dark Mode */
+.dark [data-testid="affiliate-sidebar-widget"],
+.dark [data-testid="affiliate-cert-widget"],
+.dark [data-testid="affiliate-box-study"],
+.dark [data-testid="affiliate-infeed-card"] {
+  background-color: #18181b !important;
+  border-color: #27272a !important;
+}
+
+.dark [data-testid="affiliate-sidebar-widget"] h4,
+.dark [data-testid="affiliate-cert-widget"] p,
+.dark [data-testid="affiliate-box-study"] p,
+.dark [data-testid="affiliate-infeed-card"] h2 {
+  color: #ffffff !important;
+}
+
+.dark [data-testid="affiliate-sidebar-widget"] p,
+.dark [data-testid="affiliate-cert-widget"] p:last-child,
+.dark [data-testid="affiliate-box-study"] p:last-child,
+.dark [data-testid="affiliate-infeed-card"] p {
+  color: #a1a1aa !important;
+}
+
+/* Fix màu chữ cho khối affiliate chèn động trong bài viết tin tức */
+.dark .affiliate-text-block {
+  background-color: rgba(24, 24, 27, 0.3) !important;
+  border-color: #27272a !important;
+}
+.dark .affiliate-text-block p {
+  color: #d4d4d8 !important;
+}
+
+/* Bù trừ chiều cao Header cố định khi cuộn tới tiêu đề qua Table of Contents hoặc Anchor Link */
+.article-content h2,
+.article-content h3,
+.article-content h4,
+.prose h2,
+.prose h3,
+.prose h4 {
+  scroll-margin-top: 5.5rem; /* ~ 88px, bảo vệ không bị Header che mất tiêu đề */
+}
+
+/* Infinite Vertical Scroll Animation for Donors */
+@keyframes scroll-vertical {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-50%);
+  }
+}
+
+.animate-scroll-vertical {
+  animation: scroll-vertical 20s linear infinite;
+}
+
+.animate-scroll-vertical:hover {
+  animation-play-state: paused;
+}
+
