@@ -9,29 +9,29 @@ export const metadata: Metadata = {
 
 export default function TermsOfServicePage() {
   return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col justify-between">
+    <div className="min-h-screen bg-slate-50 text-zinc-900 flex flex-col justify-between selection:bg-zinc-100">
       <Header />
       <main className="max-w-3xl mx-auto px-6 py-16 flex-1 w-full pt-24 space-y-8">
-        <article className="prose dark:prose-invert max-w-none text-left space-y-6">
-          <h1 className="text-3xl font-extrabold text-slate-950 dark:text-white border-b pb-4">
+        <article className="prose max-w-none text-left space-y-6 text-slate-700">
+          <h1 className="text-3xl font-extrabold text-slate-950 border-b pb-4">
             ĐIỀU KHOẢN DỊCH VỤ (TERMS OF SERVICE)
           </h1>
-          <p className="text-xs text-slate-400 dark:text-zinc-550 font-semibold italic">
+          <p className="text-xs text-slate-450 font-semibold italic">
             Ngày cập nhật cuối cùng: 11 tháng 07 năm 2026
           </p>
           <p className="text-sm leading-relaxed">
-            Chào mừng bạn đến với <strong>Góc Da Đẹp</strong> (địa chỉ website: <code className="text-accent">gocdadep.com</code>). Bằng việc truy cập và sử dụng bất kỳ nội dung hoặc công cụ tra cứu nào trên trang web này, bạn đồng ý tuân thủ và chịu sự ràng buộc bởi các Điều khoản dịch vụ dưới đây. Nếu bạn không đồng ý với bất kỳ điều khoản nào, vui lòng ngừng sử dụng trang web ngay lập tức.
+            Chào mừng bạn đến với <strong>Góc Da Đẹp</strong> (địa chỉ website: <code className="text-emerald-700 font-bold bg-zinc-100 px-1.5 py-0.5 rounded">gocdadep.com</code>). Bằng việc truy cập và sử dụng bất kỳ nội dung hoặc công cụ tra cứu nào trên trang web này, bạn đồng ý tuân thủ và chịu sự ràng buộc bởi các Điều khoản dịch vụ dưới đây. Nếu bạn không đồng ý với bất kỳ điều khoản nào, vui lòng ngừng sử dụng trang web ngay lập tức.
           </p>
 
-          <hr className="border-slate-200 dark:border-zinc-800 my-6" />
+          <hr className="border-slate-200 my-6" />
 
           <section className="space-y-3">
-            <h2 className="text-lg font-bold text-slate-950 dark:text-white">
+            <h2 className="text-lg font-bold text-slate-950">
               1. Tuyên Bố Miễn Trừ Trách Nhiệm Y Khoa (Medical Disclaimer)
             </h2>
             <ul className="list-disc pl-5 space-y-2 text-sm leading-relaxed">
               <li>
-                <strong>Thông tin mang tính tham khảo bách khoa:</strong> Toàn bộ nội dung hiển thị trên <code className="text-accent">gocdadep.com</code>, bao gồm từ điển hoạt chất, công dụng, hướng dẫn kết hợp, dữ liệu chất cấm và các bài viết chia sẻ kiến thức, chỉ mang tính chất thông tin và giáo dục bách khoa thuần túy.
+                <strong>Thông tin mang tính tham khảo bách khoa:</strong> Toàn bộ nội dung hiển thị trên <code className="text-emerald-750 bg-zinc-100 px-1 rounded">gocdadep.com</code>, bao gồm từ điển hoạt chất, công dụng, hướng dẫn kết hợp, dữ liệu chất cấm và các bài viết chia sẻ kiến thức, chỉ mang tính chất thông tin và giáo dục bách khoa thuần túy.
               </li>
               <li>
                 <strong>Không thay thế chẩn đoán chuyên môn:</strong> Thông tin trên website không được coi là lời khuyên y tế, chẩn đoán, phác đồ điều trị từ bác sĩ da liễu hoặc chuyên gia y tế có thẩm quyền.
@@ -42,15 +42,15 @@ export default function TermsOfServicePage() {
             </ul>
           </section>
 
-          <hr className="border-slate-200 dark:border-zinc-800 my-6" />
+          <hr className="border-slate-200 my-6" />
 
           <section className="space-y-3">
-            <h2 className="text-lg font-bold text-slate-950 dark:text-white">
+            <h2 className="text-lg font-bold text-slate-950">
               2. Quyền Sở Hữu Trí Tuệ
             </h2>
             <ul className="list-disc pl-5 space-y-2 text-sm leading-relaxed">
               <li>
-                <strong>Bản quyền nội dung:</strong> Toàn bộ văn bản, cách biên soạn, tổng hợp thông tin, cấu trúc từ điển hoạt chất và hệ thống đồ họa/hình ảnh tự thiết kế trên website đều thuộc quyền sở hữu trí tuệ của Ban quản trị <code className="text-accent">gocdadep.com</code>.
+                <strong>Bản quyền nội dung:</strong> Toàn bộ văn bản, cách biên soạn, tổng hợp thông tin, cấu trúc từ điển hoạt chất và hệ thống đồ họa/hình ảnh tự thiết kế trên website đều thuộc quyền sở hữu trí tuệ của Ban quản trị <code className="text-emerald-750 bg-zinc-100 px-1 rounded">gocdadep.com</code>.
               </li>
               <li>
                 <strong>Giới hạn sử dụng:</strong> Bạn chỉ được phép sử dụng nội dung cho mục đích cá nhân, phi thương mại. Nghiêm cấm mọi hành vi sao chép, tự động thu thập dữ liệu (cào data/scraping), phân phối lại hoặc tái xuất bản một phần hay toàn bộ nội dung của chúng tôi lên các nền tảng khác khi chưa có sự đồng ý bằng văn bản từ Ban quản trị.
@@ -58,10 +58,10 @@ export default function TermsOfServicePage() {
             </ul>
           </section>
 
-          <hr className="border-slate-200 dark:border-zinc-800 my-6" />
+          <hr className="border-slate-200 my-6" />
 
           <section className="space-y-3">
-            <h2 className="text-lg font-bold text-slate-950 dark:text-white">
+            <h2 className="text-lg font-bold text-slate-950">
               3. Quy Định Sử Dụng Website
             </h2>
             <p className="text-sm leading-relaxed">
@@ -76,10 +76,10 @@ export default function TermsOfServicePage() {
             </p>
           </section>
 
-          <hr className="border-slate-200 dark:border-zinc-800 my-6" />
+          <hr className="border-slate-200 my-6" />
 
           <section className="space-y-3">
-            <h2 className="text-lg font-bold text-slate-950 dark:text-white">
+            <h2 className="text-lg font-bold text-slate-950">
               4. Liên Kết Đến Bên Thứ Ba (Affiliate Links)
             </h2>
             <p className="text-sm leading-relaxed">
@@ -91,21 +91,21 @@ export default function TermsOfServicePage() {
             </ul>
           </section>
 
-          <hr className="border-slate-200 dark:border-zinc-800 my-6" />
+          <hr className="border-slate-200 my-6" />
 
           <section className="space-y-3">
-            <h2 className="text-lg font-bold text-slate-950 dark:text-white">
+            <h2 className="text-lg font-bold text-slate-950">
               5. Giới Hạn Trách Nhiệm Pháp Lý
             </h2>
             <p className="text-sm leading-relaxed">
-              Trong phạm vi tối đa được pháp luật cho phép, Ban quản trị <code className="text-accent">gocdadep.com</code> sẽ không chịu trách nhiệm pháp lý đối với bất kỳ thiệt hại trực tiếp, gián tiếp, ngẫu nhiên hoặc do hậu quả nào phát sinh từ việc bạn sử dụng hoặc không thể sử dụng trang web, bao gồm nhưng không giới hạn ở các lỗi kỹ thuật, gián đoạn đường truyền, hoặc sự thiếu sót về mặt cập nhật dữ liệu hoạt chất tại thời điểm tra cứu.
+              Trong phạm vi tối đa được pháp luật cho phép, Ban quản trị <code className="text-emerald-750 bg-zinc-100 px-1 rounded">gocdadep.com</code> sẽ không chịu trách nhiệm pháp lý đối với bất kỳ thiệt hại trực tiếp, gián tiếp, ngẫu nhiên hoặc do hậu quả nào phát sinh từ việc bạn sử dụng hoặc không thể sử dụng trang web, bao gồm nhưng không giới hạn ở các lỗi kỹ thuật, gián đoạn đường truyền, hoặc sự thiếu sót về mặt cập nhật dữ liệu hoạt chất tại thời điểm tra cứu.
             </p>
           </section>
 
-          <hr className="border-slate-200 dark:border-zinc-800 my-6" />
+          <hr className="border-slate-200 my-6" />
 
           <section className="space-y-3">
-            <h2 className="text-lg font-bold text-slate-950 dark:text-white">
+            <h2 className="text-lg font-bold text-slate-950">
               6. Thay Đổi Điều Khoản
             </h2>
             <p className="text-sm leading-relaxed">
@@ -113,14 +113,14 @@ export default function TermsOfServicePage() {
             </p>
           </section>
 
-          <hr className="border-slate-200 dark:border-zinc-800 my-6" />
+          <hr className="border-slate-200 my-6" />
 
           <section className="space-y-3">
-            <h2 className="text-lg font-bold text-slate-950 dark:text-white">
+            <h2 className="text-lg font-bold text-slate-950">
               7. Thông Tin Liên Hệ
             </h2>
             <p className="text-sm leading-relaxed">
-              Mọi thắc mắc hoặc góp ý về nội dung và Điều khoản dịch vụ của website, vui lòng gửi phản hồi cho chúng tôi thông qua biểu mẫu được cung cấp tại trang <strong>Liên hệ</strong>.
+              Mọi thắc mắc hoặc góp ý về nội dung và Điều khoản dịch vụ của website, vui lòng liên hệ với Ban quản trị qua email <strong>contact@gocdadep.com</strong>.
             </p>
           </section>
         </article>
