@@ -83,8 +83,66 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
   const filterUrl = buildFilterUrl();
   const processedContent = blog.contentMd.replace(/\[(👉[^\]]+)\](?!\()/g, `[$1](${filterUrl})`);
 
+  const blogJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": blog.title,
+    "description": blog.metaDescription,
+    "datePublished": blog.publishedAt,
+    "author": {
+      "@type": "Person",
+      "name": "Nguyễn Đức Tâm",
+      "url": "https://gocdadep.com/gioi-thieu"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Góc Da Đẹp",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://gocdadep.com/favicon-cropped.png"
+      }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": `https://gocdadep.com/cam-nang/post/${resolvedParams.slug}`
+    }
+  };
+
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Trang chủ",
+        "item": "https://gocdadep.com"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Cẩm nang",
+        "item": "https://gocdadep.com/cam-nang"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": blog.title,
+        "item": `https://gocdadep.com/cam-nang/post/${resolvedParams.slug}`
+      }
+    ]
+  };
+
   return (
     <div className="min-h-screen bg-white text-zinc-900 flex flex-col justify-between selection:bg-zinc-100">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(blogJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
       <Header />
 
       <main className="max-w-5xl mx-auto px-6 py-12 flex-grow w-full flex flex-col md:flex-row gap-12 pt-24 z-10 relative">

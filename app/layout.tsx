@@ -16,11 +16,27 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "gocdadep.com — Tra cứu thành phần mỹ phẩm & Phân tích hoạt chất",
-  description: "Phân tích bảng thành phần mỹ phẩm chi tiết, kiểm tra độ an toàn hoạt chất và tra cứu sản phẩm miễn phí cho người Việt.",
+  title: "Góc Da Đẹp — Tra cứu sản phẩm & cẩm nang skincare khoa học",
+  description: "Tra cứu sản phẩm và cẩm nang skincare khoa học dành cho người Việt.",
   icons: {
     icon: "/favicon-cropped.png",
     apple: "/favicon-cropped.png",
+  },
+  openGraph: {
+    title: "Góc Da Đẹp — Tra cứu sản phẩm & cẩm nang skincare khoa học",
+    description: "Tra cứu sản phẩm và cẩm nang skincare khoa học dành cho người Việt.",
+    url: "https://gocdadep.com",
+    siteName: "Góc Da Đẹp",
+    images: [
+      {
+        url: "https://gocdadep.com/favicon-cropped.png",
+        width: 512,
+        height: 512,
+        alt: "Góc Da Đẹp Logo",
+      },
+    ],
+    locale: "vi_VN",
+    type: "website",
   },
 };
 

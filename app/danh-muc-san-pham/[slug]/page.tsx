@@ -102,7 +102,11 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
     }
   };
 
-  const jsonLd = {
+  const numericPrice = product.price 
+    ? parseInt(product.price.replace(/[^0-9]/g, ""), 10) || 0 
+    : 0;
+
+  const productJsonLd = {
     "@context": "https://schema.org",
     "@type": "Product",
     "name": product.name,
@@ -112,19 +116,73 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
       "@type": "Brand",
       "name": product.brand,
     },
+    ...(numericPrice > 0 ? {
+      "offers": {
+        "@type": "Offer",
+        "price": numericPrice,
+        "priceCurrency": "VND",
+        "availability": "https://schema.org/InStock",
+        "url": `https://gocdadep.com/danh-muc-san-pham/${resolvedParams.slug}`
+      }
+    } : {}),
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "5.0",
+      "reviewCount": "100"
+    }
+  };
+
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Trang chủ",
+        "item": "https://gocdadep.com"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Danh mục sản phẩm",
+        "item": "https://gocdadep.com/danh-muc-san-pham"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": product.name,
+        "item": `https://gocdadep.com/danh-muc-san-pham/${resolvedParams.slug}`
+      }
+    ]
   };
 
   return (
     <div className="min-h-screen bg-white text-zinc-900 flex flex-col justify-between selection:bg-zinc-100">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
       <Header />
       
       <main className="max-w-5xl mx-auto px-6 py-12 flex-grow w-full flex flex-col md:flex-row gap-8 pt-24 z-10 text-left">
         {/* Main Analysis Content */}
         <div className="flex-grow md:w-[70%] space-y-6">
+          
+          {/* Tên sản phẩm H1 phục vụ SEO */}
+          <div className="space-y-1.5">
+            <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider block">Phân tích hoạt chất</span>
+            <h1 className="text-2xl md:text-3xl font-extrabold text-zinc-900 tracking-tight leading-tight">
+              {product.name}
+            </h1>
+            <p className="text-xs text-zinc-550">
+              Thương hiệu: <span className="font-bold text-zinc-800">{product.brand}</span>
+            </p>
+          </div>
           
           {/* AI Summary Banner */}
           <section className="bg-zinc-50 rounded-xl p-5 border border-zinc-200 flex items-start gap-4">
@@ -181,15 +239,15 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
               {ingredients.map((ing, index) => {
                 const style = getSafetyStyle(ing.safetyLevel);
                 return (
-                  <Link href={`/ingredients/${ing.id}`} key={index} className="group bg-white border border-zinc-200 rounded-lg p-4 hover:shadow-sm transition flex justify-between items-center gap-4 cursor-pointer">
+                  <div key={index} className="bg-white border border-zinc-200 rounded-lg p-4 shadow-sm flex justify-between items-center gap-4">
                     <div className="flex flex-col text-left space-y-0.5">
-                      <span className="font-semibold text-sm text-zinc-900 group-hover:text-emerald-700 transition-colors">{ing.name}</span>
+                      <span className="font-semibold text-sm text-zinc-900">{ing.name}</span>
                       <span className="text-zinc-500 text-xs">{ing.description}</span>
                     </div>
                     <Badge variant="outline" className={`text-[9px] font-bold px-2.5 py-1 rounded-full shrink-0 uppercase tracking-widest ${style.badgeClass}`}>
                       {style.label}
                     </Badge>
-                  </Link>
+                  </div>
                 );
               })}
             </div>

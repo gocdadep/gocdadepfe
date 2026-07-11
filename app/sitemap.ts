@@ -10,6 +10,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${domain}/`, lastModified: new Date(), changeFrequency: "daily" as const, priority: 1.0 },
     { url: `${domain}/danh-muc-san-pham`, lastModified: new Date(), changeFrequency: "daily" as const, priority: 1.0 },
     { url: `${domain}/cam-nang`, lastModified: new Date(), changeFrequency: "daily" as const, priority: 1.0 },
+    { url: `${domain}/gioi-thieu`, lastModified: new Date(), changeFrequency: "weekly" as const, priority: 0.5 },
+    { url: `${domain}/privacy-policy`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.3 },
+    { url: `${domain}/terms-of-service`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.3 },
   ];
 
   // Trang chi tiết sản phẩm
