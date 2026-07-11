@@ -2,7 +2,6 @@
 
 import { useEffect } from "react";
 import Link from "next/link";
-import ErrorReportForm from "@/components/error-report-form";
 
 export default function Error({
   error,
@@ -27,19 +26,18 @@ export default function Error({
         <div className="mt-10 flex items-center justify-center gap-x-4">
           <button
             onClick={() => reset()}
-            className="rounded-md bg-accent px-5 py-2.5 text-sm font-semibold text-accent-foreground shadow-sm hover:opacity-90 transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent cursor-pointer"
+            className="rounded-full bg-emerald-500 px-6 py-3 text-xs font-bold text-white shadow-sm hover:bg-emerald-600 transition duration-200 cursor-pointer uppercase tracking-wider"
             id="btn-retry"
           >
             Thử lại nha
           </button>
           <Link
             href="/"
-            className="text-sm font-semibold text-foreground hover:underline p-2"
+            className="text-xs font-bold text-zinc-500 hover:text-zinc-950 p-2 uppercase tracking-wider"
           >
             Về trang chủ thôi &rarr;
           </Link>
         </div>
-        <ErrorReportForm errorCode="500" errorMessage={error.message || error.stack} />
       </div>
     </div>
   );

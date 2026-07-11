@@ -121,9 +121,6 @@ export default function Header({ isStatic = false }: HeaderProps) {
               <span>Góc Da Đẹp</span>
             </Link>
             <div className="hidden md:flex gap-6">
-              <Link href="/phan-tich-thanh-phan" className={getLinkClass("/phan-tich-thanh-phan")} data-testid="link-analyzer">
-                Phân tích bảng chất
-              </Link>
               <Link href="/danh-muc-san-pham" className={getLinkClass("/danh-muc-san-pham")} data-testid="link-products">
                 Tra cứu sản phẩm
               </Link>
@@ -141,9 +138,6 @@ export default function Header({ isStatic = false }: HeaderProps) {
                 <SheetTitle className="text-left font-bold text-lg text-zinc-900">Menu</SheetTitle>
                 <SheetDescription className="sr-only">Điều hướng nhanh hệ thống Góc Da Đẹp</SheetDescription>
                 <nav className="flex flex-col gap-5 mt-8">
-                  <Link href="/phan-tich-thanh-phan" className="text-sm font-semibold text-zinc-650 hover:text-zinc-900 transition-colors">
-                    Phân tích bảng chất
-                  </Link>
                   <Link href="/danh-muc-san-pham" className="text-sm font-semibold text-zinc-650 hover:text-zinc-900 transition-colors">
                     Tra cứu sản phẩm
                   </Link>

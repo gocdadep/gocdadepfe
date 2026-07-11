@@ -8,7 +8,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // Các trang tĩnh chính
   const staticPages = [
     { url: `${domain}/`, lastModified: new Date(), changeFrequency: "daily" as const, priority: 1.0 },
-    { url: `${domain}/phan-tich-thanh-phan`, lastModified: new Date(), changeFrequency: "daily" as const, priority: 1.0 },
     { url: `${domain}/danh-muc-san-pham`, lastModified: new Date(), changeFrequency: "daily" as const, priority: 1.0 },
     { url: `${domain}/cam-nang`, lastModified: new Date(), changeFrequency: "daily" as const, priority: 1.0 },
   ];
