@@ -1,5 +1,5 @@
 import { MetadataRoute } from "next";
-import productsData from "@/data/products.json";
+import { productsData } from "@/lib/tiki-products";
 import blogsData from "@/data/blogs.json";
 
 export default function sitemap(): MetadataRoute.Sitemap {

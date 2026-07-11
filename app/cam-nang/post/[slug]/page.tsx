@@ -6,7 +6,9 @@ import Footer from "@/components/Footer";
 import blogsData from "@/data/blogs.json";
 import productsData from "@/data/products.json";
 import shopeeProductsData from "@/data/shopee-affiliate-products.json";
-import ShopeeButton from "@/components/affiliate/ShopeeButton";
+import tikiProductsData from "@/data/tiki-affiliate-products.json";
+import AffiliateButton from "@/components/affiliate/AffiliateButton";
+import { CAMPAIGN_IDS } from "@/lib/affiliate";
 import IngredientCTABlock from "@/components/feature/IngredientCTABlock";
 import BottomAnchorAd from "@/components/ads/BottomAnchorAd";
 import { FEATURE_FLAGS } from "@/lib/config/features";
@@ -54,19 +56,22 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
     );
   }
 
-  // Lấy các sản phẩm liên quan từ relatedProductIds, ưu tiên dữ liệu shopee affiliate
+  // Lấy các sản phẩm liên quan từ relatedProductIds, chỉ lấy dữ liệu tiki affiliate
   const relatedProducts = (blog.relatedProductIds || []).map((id) => {
     const rawProd = productsData.find((p) => p.id === id);
-    const shopeeProd = shopeeProductsData.find((sp) => sp.slug === id || sp.id === id);
-    if (!rawProd && !shopeeProd) return null;
+    // const shopeeProd = shopeeProductsData.find((sp) => sp.slug === id || sp.id === id);
+    const tikiProd = tikiProductsData.find((tp) => tp.slug === id || tp.id === id);
+    if (!rawProd && !tikiProd) return null;
     return {
-      id: rawProd?.id || shopeeProd?.id || "",
-      name: shopeeProd?.title || rawProd?.name || "",
-      brand: rawProd?.brand || "Mỹ phẩm",
-      image: rawProd?.image || shopeeProd?.imagePath || "/images/product-placeholder.webp",
-      price: rawProd?.price || "Liên hệ",
-      shopeeUrl: shopeeProd?.shopeeUrl || rawProd?.shopeeUrl || "",
-      ctaLabel: shopeeProd?.ctaLabel || "Săn Deal Shopee",
+      id: rawProd?.id || tikiProd?.id || "",
+      name: tikiProd?.title || rawProd?.name || "",
+      brand: rawProd?.brand || tikiProd?.brand || "Mỹ phẩm",
+      image: rawProd?.image || tikiProd?.imagePath || "/images/product-placeholder.webp",
+      price: rawProd?.price || tikiProd?.price || "Liên hệ",
+      shopeeUrl: tikiProd?.rawTikiUrl || rawProd?.shopeeUrl || "",
+      rawShopeeUrl: rawProd?.rawShopeeUrl || tikiProd?.rawTikiUrl || rawProd?.shopeeUrl || "",
+      campaignId: (rawProd?.campaignId || tikiProd?.campaignId || "shopee") as keyof typeof CAMPAIGN_IDS,
+      ctaLabel: tikiProd?.ctaLabel || "Xem trên Tiki Trading",
     };
   }).filter((p): p is NonNullable<typeof p> => p !== null);
 
@@ -174,13 +179,14 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
                         <span className="text-[10px] font-extrabold text-orange-600 block mt-0.5">{product.price || "Liên hệ"}</span>
                       </div>
                     </div>
-                    <ShopeeButton 
-                      url={product.shopeeUrl} 
-                      text={product.ctaLabel} 
-                      productId={product.id}
+                    <AffiliateButton 
+                      rawProductUrl={product.rawShopeeUrl} 
+                      campaignId={product.campaignId}
                       productName={product.name}
-                      subId={`blog-${blog.slug}`}
-                      className="h-8 w-full text-[10px] rounded-full font-bold" 
+                      articleId={blog.slug}
+                      ingredientTag={blog.tags_ingredients?.[0] || "general"}
+                      hideLabel={true}
+                      className="h-8 w-full text-[10px]" 
                     />
                   </div>
                 ))}
@@ -235,13 +241,14 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
                         </div>
                         <div className="flex items-center justify-between">
                           <span className="text-[9px] font-bold text-zinc-400 uppercase tracking-wide">Được tài trợ</span>
-                          <ShopeeButton 
-                            url={product.shopeeUrl} 
-                            text={product.ctaLabel}
-                            productId={product.id}
+                          <AffiliateButton 
+                            rawProductUrl={product.rawShopeeUrl} 
+                            campaignId={product.campaignId}
                             productName={product.name}
-                            subId={`blog-${blog.slug}`}
-                            className="h-7 px-3 text-[10px] rounded-full font-bold" 
+                            articleId={blog.slug}
+                            ingredientTag={blog.tags_ingredients?.[0] || "general"}
+                            hideLabel={true}
+                            className="h-7 px-3 text-[10px]" 
                           />
                         </div>
                       </div>

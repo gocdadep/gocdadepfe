@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ShoppingCart } from "lucide-react";
 import { trackAffiliateClick } from "@/components/analytics/GA4Provider";
+import { generateStandardATLink } from "@/lib/affiliate";
 
 interface ShopeeButtonProps {
   url: string;
@@ -23,15 +24,26 @@ export default function ShopeeButton({
   productName = ""
 }: ShopeeButtonProps) {
   const pathname = usePathname();
-  const finalUrl = url.includes("?") 
-    ? `${url}&sub_id=${subId}` 
-    : `${url}?sub_id=${subId}`;
+  
+  const isTiki = url.includes("tiki.vn");
+  const isShopee = url.includes("shopee.vn");
+  const campaignId = isTiki ? "tiki" : "shopee";
+  const buttonText = text !== "Shopee Mall" ? text : (isTiki ? "Tiki Trading" : "Shopee Mall");
+
+  const finalUrl = (isTiki || isShopee)
+    ? generateStandardATLink({
+        rawProductUrl: url,
+        articleId: subId,
+        campaignId
+      })
+    : url;
+
   const redirectUrl = `/redirect?url=${encodeURIComponent(finalUrl)}`;
 
   const handleClick = () => {
     trackAffiliateClick({
       productId: productId || url,
-      productName: productName || text,
+      productName: productName || buttonText,
       sourcePage: pathname || "unknown",
       subId: subId
     });
@@ -48,7 +60,7 @@ export default function ShopeeButton({
     >
       <div className="flex items-center justify-center gap-2 w-full h-full min-h-[inherit] py-2.5 px-5">
         <ShoppingCart className="w-3.5 h-3.5 shrink-0" />
-        <span>{text}</span>
+        <span>{buttonText}</span>
       </div>
     </Link>
   );

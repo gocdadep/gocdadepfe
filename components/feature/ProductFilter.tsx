@@ -3,7 +3,7 @@
 import { useState, useMemo, Suspense } from "react";
 import Image from "next/image";
 import { useSearchParams, useRouter } from "next/navigation";
-import productsData from "@/data/products.json";
+import { productsData } from "@/lib/tiki-products";
 import ingredientsData from "@/data/ingredients.json";
 import ShopeeButton from "@/components/affiliate/ShopeeButton";
 import InFeedAdSlot from "@/components/ads/InFeedAdSlot";

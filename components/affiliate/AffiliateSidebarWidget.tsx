@@ -1,7 +1,11 @@
 import Image from "next/image";
 import type { AffiliateProduct } from "@/types/affiliate";
-import productsData from "@/data/shopee-affiliate-products.json";
+import shopeeProducts from "@/data/shopee-affiliate-products.json";
+import tikiProducts from "@/data/tiki-affiliate-products.json";
 import ShopeeButton from "./ShopeeButton";
+
+// const productsData = [...shopeeProducts, ...tikiProducts];
+const productsData = [...tikiProducts];
 
 interface Props {
   currentPage?: number;

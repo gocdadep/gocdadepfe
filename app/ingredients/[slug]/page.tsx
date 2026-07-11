@@ -6,6 +6,9 @@ import Footer from "@/components/Footer";
 import ingredientsData from "@/data/ingredients.json";
 import productsData from "@/data/products.json";
 import shopeeProductsData from "@/data/shopee-affiliate-products.json";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import tikiProductsData from "@/data/tiki-affiliate-products.json";
+import { generateStandardATLink, CAMPAIGN_IDS } from "@/lib/affiliate";
 import { ShieldCheck, ArrowLeft, Info } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
@@ -75,21 +78,29 @@ export default async function IngredientDetailPage({
     );
   }
 
-  // Lấy danh sách sản phẩm gợi ý chứa hoạt chất này
-  // Filter products containing ingredient
-  const matchedProducts = productsData.filter((p) =>
-    p.ingredientIds.includes(ingredientSlug)
-  );
+  // Lọc trực tiếp sản phẩm chứa hoạt chất từ tikiProductsData
+  const matchedProducts = tikiProductsData.filter((p) => {
+    const titleLower = p.title.toLowerCase();
+    const matchesName = titleLower.includes(ingredient.name.toLowerCase());
+    const matchesAlias = ingredient.aliases?.some(alias => 
+      titleLower.includes(alias.toLowerCase())
+    ) || false;
+    return matchesName || matchesAlias;
+  });
 
-  // Map thêm thông tin phong phú từ shopee-affiliate-products.json
   const enrichedProducts = matchedProducts.map((p) => {
-    const shopeeInfo = shopeeProductsData.find((sp) => sp.slug === p.id || sp.id === p.id);
     return {
-      ...p,
-      ctaLabel: shopeeInfo?.ctaLabel || "Xem trên Shopee",
-      tags: shopeeInfo?.tags || [],
+      id: p.id,
+      name: p.title,
+      brand: p.brand,
+      image: p.imagePath || "/images/product-placeholder.webp",
+      price: p.price || "Liên hệ",
+      shopeeUrl: p.rawTikiUrl,
+      ctaLabel: p.ctaLabel || "Xem trên Tiki Trading",
+      tags: p.tags || [],
+      campaignId: "tiki"
     };
-  }).slice(0, 4); // Lấy tối đa 4 sản phẩm theo AC-1
+  }).slice(0, 4);
 
   const getSafetyStyle = (level: string) => {
     switch (level) {
@@ -210,9 +221,16 @@ export default async function IngredientDetailPage({
 
                   <div className="space-y-4 divide-y divide-zinc-150">
                     {enrichedProducts.map((product) => {
-                      const finalUrl = product.shopeeUrl.includes("?")
-                        ? `${product.shopeeUrl}&sub_id=ingredient-${ingredientSlug}`
-                        : `${product.shopeeUrl}?sub_id=ingredient-${ingredientSlug}`;
+                      const isTiki = product.shopeeUrl.includes("tiki.vn");
+                      const isShopee = product.shopeeUrl.includes("shopee.vn");
+                      const campaignId = isTiki ? "tiki" : (product.campaignId || "shopee");
+                      const finalUrl = (isTiki || isShopee)
+                        ? generateStandardATLink({
+                            rawProductUrl: product.shopeeUrl,
+                            articleId: `ingredient-${ingredientSlug}`,
+                            campaignId: campaignId as keyof typeof CAMPAIGN_IDS
+                          })
+                        : product.shopeeUrl;
                       const redirectUrl = `/redirect?url=${encodeURIComponent(finalUrl)}`;
 
                       return (

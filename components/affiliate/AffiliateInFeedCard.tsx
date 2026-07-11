@@ -1,6 +1,11 @@
 import Image from "next/image";
 import type { AffiliateProduct } from "@/types/affiliate";
-import productsData from "@/data/shopee-affiliate-products.json";
+import shopeeProducts from "@/data/shopee-affiliate-products.json";
+import tikiProducts from "@/data/tiki-affiliate-products.json";
+import { generateStandardATLink } from "@/lib/affiliate";
+
+// const productsData = [...shopeeProducts, ...tikiProducts];
+const productsData = [...tikiProducts];
 
 interface Props {
   currentPage?: number;
@@ -24,6 +29,20 @@ export default function AffiliateInFeedCard({ currentPage, rowIndex }: Props) {
   }
 
   if (!product) return null;
+
+  const isTiki = product.shopeeUrl.includes("tiki.vn");
+  const isShopee = product.shopeeUrl.includes("shopee.vn");
+  const campaignId = isTiki ? "tiki" : "shopee";
+  const finalUrl = (isTiki || isShopee)
+    ? generateStandardATLink({
+        rawProductUrl: product.shopeeUrl,
+        articleId: `infeed_${currentPage || 1}`,
+        campaignId
+      })
+    : product.shopeeUrl;
+
+  const redirectUrl = `/redirect?url=${encodeURIComponent(finalUrl)}`;
+  const buttonText = product.ctaLabel || (isTiki ? "Xem trên Tiki Trading" : "Xem trên Shopee");
 
   return (
     <div
@@ -56,12 +75,12 @@ export default function AffiliateInFeedCard({ currentPage, rowIndex }: Props) {
             <span>Tài trợ</span>
           </div>
           <a
-            href={`/redirect?url=${encodeURIComponent(product.shopeeUrl)}`}
+            href={redirectUrl}
             target="_blank"
             rel="nofollow noopener sponsored"
-            className="text-xs font-bold text-orange-600 group-hover:underline"
+            className="text-xs font-bold text-primary group-hover:underline"
           >
-            {product.ctaLabel || "Xem trên Shopee"} &rarr;
+            {buttonText} &rarr;
           </a>
         </div>
       </div>

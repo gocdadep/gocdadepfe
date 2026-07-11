@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import productsData from "@/data/products.json";
+import { productsData } from "@/lib/tiki-products";
 import ingredientsData from "@/data/ingredients.json";
 import ShopeeButton from "@/components/affiliate/ShopeeButton";
 import StickyShopeeCTA from "@/components/affiliate/StickyShopeeCTA";

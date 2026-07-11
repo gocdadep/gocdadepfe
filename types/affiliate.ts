@@ -1,4 +1,4 @@
-export type AffiliateCategory = "study" | "dorm" | "collection" | "serum" | "sunscreen" | "toner" | "retinol" | "moisturizer" | "cleanser" | "acme";
+export type AffiliateCategory = "study" | "dorm" | "collection" | "serum" | "sunscreen" | "toner" | "retinol" | "moisturizer" | "cleanser" | "acme" | "general";
 
 export interface AffiliateProduct {
   id: string;
