@@ -1,5 +1,4 @@
 import type { NextConfig } from "next";
-import affiliateLinks from "./affiliate-links.json";
 
 const nextConfig: NextConfig = {
   images: {
@@ -13,7 +12,7 @@ const nextConfig: NextConfig = {
     ],
   },
   async redirects() {
-    const defaultRedirects = [
+    return [
       {
         source: "/analyzer",
         destination: "/phan-tich-thanh-phan",
@@ -81,14 +80,6 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
     ];
-
-    const affiliateRedirects = affiliateLinks.map((link) => ({
-      source: link.source,
-      destination: link.destination,
-      permanent: false,
-    }));
-
-    return [...defaultRedirects, ...affiliateRedirects];
   },
 };
 
