@@ -7,7 +7,7 @@ import IngredientDetailModal from "@/components/feature/IngredientDetailModal";
 import { AlertTriangle } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 
 interface MappedIngredient {

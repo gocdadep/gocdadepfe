@@ -98,12 +98,12 @@ export default function Header({ isStatic = false }: HeaderProps) {
   };
 
   let headerClass = "left-0 right-0 w-full transition-all duration-300 ";
-  
+
   if (isStatic) {
     headerClass += "relative bg-white border-b border-zinc-200 h-16";
   } else {
     headerClass += "fixed top-0 z-50 ";
-    
+
     if (isVisible) {
       headerClass += "translate-y-0 ";
     } else {
@@ -142,14 +142,8 @@ export default function Header({ isStatic = false }: HeaderProps) {
           </div>
           <div className="flex items-center gap-4">
             <Sheet>
-              <SheetTrigger asChild>
-                <button 
-                  type="button" 
-                  className="inline-flex shrink-0 items-center justify-center rounded-md text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 h-9 w-9 p-0 md:hidden cursor-pointer" 
-                  aria-label="Mở menu"
-                >
-                  <Menu className="w-5 h-5" />
-                </button>
+              <SheetTrigger className="inline-flex shrink-0 items-center justify-center rounded-md text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 h-9 w-9 p-0 md:hidden cursor-pointer" aria-label="Mở menu">
+                <Menu className="w-5 h-5" />
               </SheetTrigger>
               <SheetContent side="right" className="w-72 bg-white">
                 <SheetTitle className="text-left font-bold text-lg text-zinc-900">Menu</SheetTitle>

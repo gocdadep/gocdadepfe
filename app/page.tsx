@@ -206,14 +206,13 @@ export default function HomePage() {
                 value={textareaInput}
                 onChange={(e) => setTextareaInput(e.target.value)}
               />
-              <Button asChild className="w-full h-11 bg-zinc-900 text-white hover:bg-zinc-800 cursor-pointer">
-                <Link
-                  data-testid="btn-analyze-ingredients"
-                  href={`/phan-tich-thanh-phan?ingredients=${encodeURIComponent(textareaInput)}`}
-                >
-                  Phân Tích Ngay
-                </Link>
-              </Button>
+              <Link
+                data-testid="btn-analyze-ingredients"
+                href={`/phan-tich-thanh-phan?ingredients=${encodeURIComponent(textareaInput)}`}
+                className="inline-flex items-center justify-center rounded-lg text-xs font-semibold uppercase tracking-wider transition-all w-full h-11 bg-zinc-900 text-white hover:bg-zinc-800 cursor-pointer shadow-sm"
+              >
+                Phân Tích Ngay
+              </Link>
             </CardContent>
           </Card>
         </section>

@@ -246,11 +246,9 @@ function ProductFilterContent() {
         <span className="text-xs font-semibold text-zinc-700">Tìm thấy {filteredProducts.length} sản phẩm</span>
         
         <Drawer>
-          <DrawerTrigger asChild>
-            <Button variant="outline" size="sm" className="h-8 text-xs flex items-center gap-1 cursor-pointer">
-              <Filter className="w-3.5 h-3.5" />
-              <span>Bộ lọc</span>
-            </Button>
+          <DrawerTrigger className="inline-flex items-center justify-center rounded-md border border-zinc-200 bg-white hover:bg-zinc-50 h-8 text-xs px-3 font-medium gap-1 cursor-pointer">
+            <Filter className="w-3.5 h-3.5" />
+            <span>Bộ lọc</span>
           </DrawerTrigger>
           <DrawerContent className="p-6">
             <DrawerTitle className="text-left font-bold text-zinc-900">Bộ lọc</DrawerTitle>
