@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import AdSenseScript from "@/components/AdSenseScript";
-import BottomNavBar from "@/components/BottomNavBar";
 import GA4Provider from "@/components/analytics/GA4Provider";
 import "./globals.css";
 
@@ -39,9 +38,8 @@ export default function RootLayout({
     >
       <head>
       </head>
-      <body className="min-h-full flex flex-col bg-background text-foreground pb-16 md:pb-0">
+      <body className="min-h-full flex flex-col bg-background text-foreground">
         {children}
-        <BottomNavBar />
         <AdSenseScript />
         <GA4Provider />
       </body>

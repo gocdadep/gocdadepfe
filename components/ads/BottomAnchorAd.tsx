@@ -33,7 +33,7 @@ export default function BottomAnchorAd({ contextSlug = "generic", contextConcern
   // Render AdSense Anchor Ads
   if (FEATURE_FLAGS.ENABLE_ADSENSE) {
     return (
-      <div className="fixed bottom-16 left-0 right-0 w-full bg-white border-t border-zinc-200 z-50 md:hidden h-[50px] flex items-center justify-between px-4 shadow-lg">
+      <div className="fixed bottom-0 left-0 right-0 w-full bg-white border-t border-zinc-200 z-50 md:hidden h-[50px] flex items-center justify-between px-4 shadow-lg">
         <div className="flex-1 overflow-hidden flex items-center justify-center">
           <ins className="adsbygoogle"
                style={{ display: "inline-block", width: "320px", height: "50px" }}
@@ -57,7 +57,7 @@ export default function BottomAnchorAd({ contextSlug = "generic", contextConcern
     : "/danh-muc-san-pham";
 
   return (
-    <div className="fixed bottom-16 left-0 right-0 w-full bg-amber-50 border-t border-amber-200/60 z-50 md:hidden h-[50px] flex items-center justify-between pl-4 pr-2 shadow-lg transition duration-200">
+    <div className="fixed bottom-0 left-0 right-0 w-full bg-amber-50 border-t border-amber-200/60 z-50 md:hidden h-[50px] flex items-center justify-between pl-4 pr-2 shadow-lg transition duration-200">
       <Link href={targetUrl} className="flex-1 flex items-center gap-2 min-w-0">
         <span className="text-[9px] font-bold bg-amber-100 text-amber-700 px-1.5 py-0.5 rounded uppercase shrink-0">GỢI Ý</span>
         <span className="text-xs font-bold text-slate-800 truncate">

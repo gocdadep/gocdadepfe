@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import { Fragment } from "react";
+import { marked } from "marked";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import blogsData from "@/data/blogs.json";
@@ -79,6 +80,9 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
     return `/danh-muc-san-pham?${params.toString()}`;
   };
 
+  const filterUrl = buildFilterUrl();
+  const processedContent = blog.contentMd.replace(/\[(👉[^\]]+)\](?!\()/g, `[$1](${filterUrl})`);
+
   return (
     <div className="min-h-screen bg-white text-zinc-900 flex flex-col justify-between selection:bg-zinc-100">
       <Header />
@@ -117,15 +121,16 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
           <div className="prose prose-zinc max-w-none text-zinc-700 leading-relaxed font-normal text-base md:text-lg space-y-4">
             <p className="font-semibold text-zinc-900">{blog.metaDescription}</p>
             {/* Split Markdown đơn giản để render thô */}
-            {blog.contentMd.split("\n\n").map((para, i) => {
+            {processedContent.split("\n\n").map((para, i) => {
               const elements = [];
-              if (para.startsWith("# ")) {
-                elements.push(<h1 key={i} className="text-2xl font-bold text-zinc-950 mt-6 mb-3">{para.replace("# ", "")}</h1>);
-              } else if (para.startsWith("## ")) {
-                elements.push(<h2 key={i} className="text-xl font-bold text-zinc-950 mt-5 mb-2.5">{para.replace("## ", "")}</h2>);
-              } else {
-                elements.push(<p key={i} className="text-sm md:text-base leading-relaxed">{para}</p>);
-              }
+              const htmlContent = marked.parse(para) as string;
+              elements.push(
+                <div 
+                  key={i} 
+                  dangerouslySetInnerHTML={{ __html: htmlContent }} 
+                  className="markdown-block"
+                />
+              );
 
               // US-005: Chèn inline banner gợi ý dẹt sau đoạn văn thứ 3 (index 2)
               if (i === 2) {
