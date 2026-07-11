@@ -5,7 +5,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: ["/redirect", "/api/*"],
+      disallow: ["/redirect", "/api/*", "/go/*"],
     },
     sitemap: "https://gocdadep.com/sitemap.xml",
   };

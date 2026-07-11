@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import blogsData from "@/data/blogs.json";
 import productsData from "@/data/products.json";
+import shopeeProductsData from "@/data/shopee-affiliate-products.json";
 import ShopeeButton from "@/components/affiliate/ShopeeButton";
 import IngredientCTABlock from "@/components/feature/IngredientCTABlock";
 import BottomAnchorAd from "@/components/ads/BottomAnchorAd";
@@ -53,8 +54,21 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
     );
   }
 
-  // Lấy các sản phẩm liên quan từ relatedProductIds
-  const relatedProducts = productsData.filter((p) => blog.relatedProductIds.includes(p.id));
+  // Lấy các sản phẩm liên quan từ relatedProductIds, ưu tiên dữ liệu shopee affiliate
+  const relatedProducts = (blog.relatedProductIds || []).map((id) => {
+    const rawProd = productsData.find((p) => p.id === id);
+    const shopeeProd = shopeeProductsData.find((sp) => sp.slug === id || sp.id === id);
+    if (!rawProd && !shopeeProd) return null;
+    return {
+      id: rawProd?.id || shopeeProd?.id || "",
+      name: shopeeProd?.title || rawProd?.name || "",
+      brand: rawProd?.brand || "Mỹ phẩm",
+      image: rawProd?.image || shopeeProd?.imagePath || "/images/product-placeholder.webp",
+      price: rawProd?.price || "Liên hệ",
+      shopeeUrl: shopeeProd?.shopeeUrl || rawProd?.shopeeUrl || "",
+      ctaLabel: shopeeProd?.ctaLabel || "Săn Deal Shopee",
+    };
+  }).filter((p): p is NonNullable<typeof p> => p !== null);
 
   // Build URL bộ lọc từ concerns và skin_types của blog
   const buildFilterUrl = () => {
@@ -162,10 +176,10 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
                     </div>
                     <ShopeeButton 
                       url={product.shopeeUrl} 
-                      text="Săn Deal Shopee" 
+                      text={product.ctaLabel} 
                       productId={product.id}
                       productName={product.name}
-                      subId={`blog_mobile_${blog.slug}`}
+                      subId={`blog-${blog.slug}`}
                       className="h-8 w-full text-[10px] rounded-full font-bold" 
                     />
                   </div>
@@ -223,10 +237,10 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
                           <span className="text-[9px] font-bold text-zinc-400 uppercase tracking-wide">Được tài trợ</span>
                           <ShopeeButton 
                             url={product.shopeeUrl} 
-                            text="Săn Deal Shopee"
+                            text={product.ctaLabel}
                             productId={product.id}
                             productName={product.name}
-                            subId={`blog_sidebar_${blog.slug}`}
+                            subId={`blog-${blog.slug}`}
                             className="h-7 px-3 text-[10px] rounded-full font-bold" 
                           />
                         </div>

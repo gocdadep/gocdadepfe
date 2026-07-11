@@ -174,15 +174,15 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
               {ingredients.map((ing, index) => {
                 const style = getSafetyStyle(ing.safetyLevel);
                 return (
-                  <div key={index} className="group bg-white border border-zinc-200 rounded-lg p-4 hover:shadow-sm transition flex justify-between items-center gap-4">
+                  <Link href={`/ingredients/${ing.id}`} key={index} className="group bg-white border border-zinc-200 rounded-lg p-4 hover:shadow-sm transition flex justify-between items-center gap-4 cursor-pointer">
                     <div className="flex flex-col text-left space-y-0.5">
-                      <span className="font-semibold text-sm text-zinc-900 transition-colors">{ing.name}</span>
+                      <span className="font-semibold text-sm text-zinc-900 group-hover:text-emerald-700 transition-colors">{ing.name}</span>
                       <span className="text-zinc-500 text-xs">{ing.description}</span>
                     </div>
                     <Badge variant="outline" className={`text-[9px] font-bold px-2.5 py-1 rounded-full shrink-0 uppercase tracking-widest ${style.badgeClass}`}>
                       {style.label}
                     </Badge>
-                  </div>
+                  </Link>
                 );
               })}
             </div>
@@ -206,7 +206,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                   <div className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider">GỢI Ý DÀNH CHO BẠN</div>
                   <ShopeeButton 
                     url={product.shopeeUrl} 
-                    subId="gocdadep_product" 
+                    subId={`products-${product.id}`} 
                     className="w-full text-xs bg-zinc-900 hover:bg-zinc-800 text-white font-medium" 
                   />
                 </div>
@@ -228,7 +228,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
       </main>
 
       {/* Sticky CTA kích hoạt khi cuộn quá 30% */}
-      <StickyShopeeCTA shopeeUrl={product.shopeeUrl} subId="gocdadep_product" />
+      <StickyShopeeCTA shopeeUrl={product.shopeeUrl} subId={`products-${product.id}`} />
 
       <Footer />
     </div>

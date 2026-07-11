@@ -37,6 +37,9 @@ export default function Footer() {
         <Separator className="my-8" />
         <div className="text-center space-y-2">
           <p className="text-[10px] text-zinc-400 leading-relaxed max-w-2xl mx-auto">
+            Website là trang thông tin độc lập. Các liên kết mua hàng được dẫn từ các sàn thương mại điện tử chính hãng. Website nhận hoa hồng khi bạn mua qua link.
+          </p>
+          <p className="text-[10px] text-zinc-400 leading-relaxed max-w-2xl mx-auto">
             ⚕️ Thông tin trên Góc Da Đẹp chỉ mang tính chất tham khảo bách khoa. Không thay thế chỉ định, phác đồ điều trị của bác sĩ da liễu có chuyên môn.
           </p>
           <p className="text-[10px] text-zinc-400 font-semibold uppercase tracking-wider">
