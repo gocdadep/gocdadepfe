@@ -1,17 +1,18 @@
 import Link from "next/link";
+import { ShoppingCart } from "lucide-react";
 
 interface ShopeeButtonProps {
   url: string;
-  subId: string;
+  subId?: string;
   className?: string;
   text?: string;
 }
 
 export default function ShopeeButton({ 
   url, 
-  subId, 
+  subId = "gocdadep_product", 
   className = "", 
-  text = "Xem giá tại Shopee Mall" 
+  text = "Shopee Mall" 
 }: ShopeeButtonProps) {
   const finalUrl = url.includes("?") 
     ? `${url}&sub_id=${subId}` 
@@ -23,9 +24,10 @@ export default function ShopeeButton({
       data-testid="btn-shopee-affiliate"
       href={redirectUrl}
       rel="sponsored nofollow"
-      className={`inline-flex items-center justify-center bg-[#EE4D2D] hover:bg-[#d73f21] text-white font-bold px-6 py-3 rounded-xl transition duration-200 min-h-[48px] min-w-[150px] shadow-sm ${className}`}
+      className={`inline-flex items-center justify-center gap-1.5 bg-[#EE4D2D] hover:bg-[#d73f21] text-white font-semibold rounded-lg transition duration-200 shadow-sm cursor-pointer ${className}`}
     >
-      {text}
+      <ShoppingCart className="w-3.5 h-3.5 shrink-0" />
+      <span>{text}</span>
     </Link>
   );
 }
