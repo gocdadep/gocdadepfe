@@ -15,7 +15,7 @@ function RedirectHandler() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-background text-foreground p-4">
       <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-accent mb-4"></div>
-      <p className="text-sm text-text-secondary">Đang chuyển hướng đến Shopee Mall...</p>
+      <p className="text-sm text-text-secondary">Đang chuyển hướng đến đối tác...</p>
     </div>
   );
 }

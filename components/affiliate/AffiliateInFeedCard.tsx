@@ -1,11 +1,7 @@
 import Image from "next/image";
-import type { AffiliateProduct } from "@/types/affiliate";
-import shopeeProducts from "@/data/shopee-affiliate-products.json";
-import tikiProducts from "@/data/tiki-affiliate-products.json";
+import type { Product } from "@/types/product";
+import { productsData } from "@/lib/products-store";
 import { generateStandardATLink } from "@/lib/affiliate";
-
-// const productsData = [...shopeeProducts, ...tikiProducts];
-const productsData = [...tikiProducts];
 
 interface Props {
   currentPage?: number;
@@ -13,9 +9,9 @@ interface Props {
 }
 
 export default function AffiliateInFeedCard({ currentPage, rowIndex }: Props) {
-  let product: AffiliateProduct | null = null;
+  let product: Product | null = null;
   try {
-    const products = productsData as AffiliateProduct[];
+    const products = productsData;
     if (currentPage && currentPage > 0) {
       const globalIndex = (currentPage - 1) * 3 + (rowIndex ?? 0);
       const index = globalIndex % products.length;
@@ -30,19 +26,19 @@ export default function AffiliateInFeedCard({ currentPage, rowIndex }: Props) {
 
   if (!product) return null;
 
-  const isTiki = product.shopeeUrl.includes("tiki.vn");
-  const isShopee = product.shopeeUrl.includes("shopee.vn");
+  const isTiki = product.rawProductUrl.includes("tiki.vn");
+  const isShopee = product.rawProductUrl.includes("shopee.vn");
   const campaignId = isTiki ? "tiki" : "shopee";
   const finalUrl = (isTiki || isShopee)
     ? generateStandardATLink({
-        rawProductUrl: product.shopeeUrl,
+        rawProductUrl: product.rawProductUrl,
         articleId: `infeed_${currentPage || 1}`,
         campaignId
       })
-    : product.shopeeUrl;
+    : product.rawProductUrl;
 
   const redirectUrl = `/redirect?url=${encodeURIComponent(finalUrl)}`;
-  const buttonText = product.ctaLabel || (isTiki ? "Xem trên Tiki Trading" : "Xem trên Shopee");
+  const buttonText = product.ctaLabel || "Xem chi tiết";
 
   return (
     <div
@@ -51,8 +47,8 @@ export default function AffiliateInFeedCard({ currentPage, rowIndex }: Props) {
     >
       <div className="h-44 overflow-hidden relative">
         <Image
-          src={product.imagePath}
-          alt={product.title}
+          src={product.image}
+          alt={product.name}
           fill
           sizes="(max-width: 768px) 100vw, 400px"
           className="object-cover group-hover:scale-105 transition-transform duration-500"
@@ -64,7 +60,7 @@ export default function AffiliateInFeedCard({ currentPage, rowIndex }: Props) {
             Gợi ý dành cho bạn
           </span>
           <h2 className="text-base font-bold text-slate-955 leading-snug">
-            {product.title}
+            {product.name}
           </h2>
           <p className="text-slate-500 text-xs line-clamp-2 leading-relaxed">
             {product.description}

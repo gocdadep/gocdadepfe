@@ -4,9 +4,7 @@ import { Fragment } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import blogsData from "@/data/blogs.json";
-import productsData from "@/data/products.json";
-import shopeeProductsData from "@/data/shopee-affiliate-products.json";
-import tikiProductsData from "@/data/tiki-affiliate-products.json";
+import { productsData } from "@/lib/products-store";
 import AffiliateButton from "@/components/affiliate/AffiliateButton";
 import { CAMPAIGN_IDS } from "@/lib/affiliate";
 import IngredientCTABlock from "@/components/feature/IngredientCTABlock";
@@ -56,22 +54,20 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
     );
   }
 
-  // Lấy các sản phẩm liên quan từ relatedProductIds, chỉ lấy dữ liệu tiki affiliate
+  // Lấy các sản phẩm liên quan từ relatedProductIds từ productsData của store
   const relatedProducts = (blog.relatedProductIds || []).map((id) => {
-    const rawProd = productsData.find((p) => p.id === id);
-    // const shopeeProd = shopeeProductsData.find((sp) => sp.slug === id || sp.id === id);
-    const tikiProd = tikiProductsData.find((tp) => tp.slug === id || tp.id === id);
-    if (!rawProd && !tikiProd) return null;
+    const prod = productsData.find((p) => p.id === id || p.slug === id || p.id === `tiki-${id}`);
+    if (!prod) return null;
     return {
-      id: rawProd?.id || tikiProd?.id || "",
-      name: tikiProd?.title || rawProd?.name || "",
-      brand: rawProd?.brand || tikiProd?.brand || "Mỹ phẩm",
-      image: rawProd?.image || tikiProd?.imagePath || "/images/product-placeholder.webp",
-      price: rawProd?.price || tikiProd?.price || "Liên hệ",
-      shopeeUrl: tikiProd?.rawTikiUrl || rawProd?.shopeeUrl || "",
-      rawShopeeUrl: rawProd?.rawShopeeUrl || tikiProd?.rawTikiUrl || rawProd?.shopeeUrl || "",
-      campaignId: (rawProd?.campaignId || tikiProd?.campaignId || "shopee") as keyof typeof CAMPAIGN_IDS,
-      ctaLabel: tikiProd?.ctaLabel || "Xem trên Tiki Trading",
+      id: prod.id,
+      name: prod.name,
+      brand: prod.brand,
+      image: prod.image,
+      price: prod.price || "Liên hệ",
+      shopeeUrl: prod.rawProductUrl,
+      rawShopeeUrl: prod.rawProductUrl,
+      campaignId: prod.source as keyof typeof CAMPAIGN_IDS,
+      ctaLabel: prod.ctaLabel || "Xem chi tiết",
     };
   }).filter((p): p is NonNullable<typeof p> => p !== null);
 

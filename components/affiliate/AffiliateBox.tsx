@@ -1,16 +1,12 @@
 import Image from "next/image";
-import type { AffiliateProduct } from "@/types/affiliate";
-import shopeeProducts from "@/data/shopee-affiliate-products.json";
-import tikiProducts from "@/data/tiki-affiliate-products.json";
-import ShopeeButton from "./ShopeeButton";
-
-// const productsData = [...shopeeProducts, ...tikiProducts];
-const productsData = [...tikiProducts];
+import type { Product } from "@/types/product";
+import { productsData } from "@/lib/products-store";
+import AffiliateCtaButton from "./AffiliateCtaButton";
 
 export default function AffiliateBox() {
-  let product: AffiliateProduct | null = null;
+  let product: Product | null = null;
   try {
-    const products = productsData as AffiliateProduct[];
+    const products = productsData;
     product = products.find(p => p.category === "serum") ?? null;
   } catch (error) {
     console.error("Error loading affiliate product:", error);
@@ -26,10 +22,11 @@ export default function AffiliateBox() {
     >
       <div className="flex-shrink-0 relative">
         <Image
-          src={product.imagePath}
-          alt={product.title}
+          src={product.image}
+          alt={product.name}
           width={80}
           height={80}
+          style={{ width: "auto", height: "auto" }}
           className="rounded-xl object-cover bg-white"
         />
       </div>
@@ -38,17 +35,17 @@ export default function AffiliateBox() {
           Gợi ý dành cho bạn
         </p>
         <p className="font-bold text-sm text-slate-900 leading-snug truncate">
-          {product.title}
+          {product.name}
         </p>
         <p className="text-xs text-slate-505 mt-0.5 line-clamp-2">
           {product.description}
         </p>
       </div>
-      <ShopeeButton 
-        url={product.shopeeUrl} 
-        text="Xem" 
+      <AffiliateCtaButton 
+        url={product.rawProductUrl} 
+        text="Xem chi tiết" 
         productId={product.id}
-        productName={product.title}
+        productName={product.name}
         subId="affiliate_box"
         className="flex-shrink-0 text-xs rounded-full font-bold px-4 h-9"
       />

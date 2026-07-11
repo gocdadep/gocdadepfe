@@ -4,10 +4,7 @@ import Image from "next/image";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ingredientsData from "@/data/ingredients.json";
-import productsData from "@/data/products.json";
-import shopeeProductsData from "@/data/shopee-affiliate-products.json";
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import tikiProductsData from "@/data/tiki-affiliate-products.json";
+import { productsData } from "@/lib/products-store";
 import { generateStandardATLink, CAMPAIGN_IDS } from "@/lib/affiliate";
 import { ShieldCheck, ArrowLeft, Info } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -78,12 +75,12 @@ export default async function IngredientDetailPage({
     );
   }
 
-  // Lọc trực tiếp sản phẩm chứa hoạt chất từ tikiProductsData
-  const matchedProducts = tikiProductsData.filter((p) => {
-    const titleLower = p.title.toLowerCase();
-    const matchesName = titleLower.includes(ingredient.name.toLowerCase());
+  // Lọc trực tiếp sản phẩm chứa hoạt chất từ productsData
+  const matchedProducts = productsData.filter((p) => {
+    const nameLower = p.name.toLowerCase();
+    const matchesName = nameLower.includes(ingredient.name.toLowerCase());
     const matchesAlias = ingredient.aliases?.some(alias => 
-      titleLower.includes(alias.toLowerCase())
+      nameLower.includes(alias.toLowerCase())
     ) || false;
     return matchesName || matchesAlias;
   });
@@ -91,14 +88,14 @@ export default async function IngredientDetailPage({
   const enrichedProducts = matchedProducts.map((p) => {
     return {
       id: p.id,
-      name: p.title,
+      name: p.name,
       brand: p.brand,
-      image: p.imagePath || "/images/product-placeholder.webp",
+      image: p.image,
       price: p.price || "Liên hệ",
-      shopeeUrl: p.rawTikiUrl,
-      ctaLabel: p.ctaLabel || "Xem trên Tiki Trading",
+      shopeeUrl: p.rawProductUrl,
+      ctaLabel: p.ctaLabel || "Xem chi tiết",
       tags: p.tags || [],
-      campaignId: "tiki"
+      campaignId: p.source
     };
   }).slice(0, 4);
 
@@ -267,11 +264,11 @@ export default async function IngredientDetailPage({
                           </div>
 
                           <a
-                            data-testid="btn-shopee-affiliate"
+                            data-testid="btn-affiliate-cta"
                             href={redirectUrl}
                             target="_blank"
                             rel="nofollow noopener sponsored"
-                            className="block w-full text-center py-2 bg-emerald-750 hover:bg-emerald-850 text-white text-xs font-bold rounded-full transition-all duration-200"
+                            className="block w-full text-center py-2 bg-primary hover:bg-emerald-600 text-white text-xs font-bold rounded-full transition-all duration-200"
                           >
                             {product.ctaLabel}
                           </a>

@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import HomeClient from "@/components/feature/HomeClient";
-import { productsData } from "@/lib/tiki-products";
+import { productsData } from "@/lib/products-store";
 import blogsData from "@/data/blogs.json";
 import type { Product, Blog } from "@/types/product";
 

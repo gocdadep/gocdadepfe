@@ -40,7 +40,7 @@ export default function AboutPage() {
                 🎯 <strong>Cẩm nang &amp; Routine Skincare khoa học:</strong> Tổng hợp các bài viết mổ xẻ chuyên sâu về hoạt chất dưỡng da (BHA, Retinol, Niacinamide, Vitamin C, B5...) và các bước kết hợp routine tối giản từ các chuyên gia da liễu độc lập, không quảng cáo nói quá.
               </li>
               <li>
-                🛒 <strong>Liên kết tiếp thị chính hãng:</strong> Kết nối trực tiếp đến các sản phẩm chính hãng uy tín trên sàn Shopee Mall. Toàn bộ link affiliate được dán nhãn minh bạch và có cơ chế bảo vệ SEO Link Juice nghiêm ngặt.
+                🛒 <strong>Liên kết tiếp thị chính hãng:</strong> Kết nối trực tiếp đến các sản phẩm chính hãng uy tín trên các sàn đối tác uy tín. Toàn bộ link affiliate được dán nhãn minh bạch và có cơ chế bảo vệ SEO Link Juice nghiêm ngặt.
               </li>
             </ul>
           </section>

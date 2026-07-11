@@ -51,31 +51,11 @@ export default function AffiliateButton({
     });
   };
 
-  const getPlatformLabel = (id: keyof typeof CAMPAIGN_IDS) => {
-    switch (id) {
-      case "shopee":
-        return "Shopee Mall";
-      case "lazada":
-        return "Lazada LazMall";
-      case "tiki":
-        return "Tiki Trading";
-      case "beautybox":
-        return "Beautybox";
-      case "concung":
-        return "Con Cưng";
-      case "thefaceshop":
-        return "The Face Shop";
-      case "bestme":
-        return "Bestme";
-      default:
-        return "Sàn đối tác";
-    }
-  };
 
   return (
     <div className={`my-4 flex flex-col items-center gap-1.5 w-full ${className}`}>
       <Link
-        data-testid="btn-shopee-affiliate"
+        data-testid="btn-affiliate-cta"
         href={redirectUrl}
         target="_blank"
         rel="nofollow noopener sponsored"
@@ -84,7 +64,7 @@ export default function AffiliateButton({
       >
         <div className="flex items-center justify-center gap-2 w-full h-full py-2.5 px-5">
           <ShoppingBag className="w-4 h-4 shrink-0" />
-          <span>Tham khảo {productName} tại {getPlatformLabel(campaignId)}</span>
+          <span>Tham khảo chi tiết sản phẩm</span>
         </div>
       </Link>
       {/* Nhãn minh bạch bắt buộc theo chính sách của Google AdSense và Sàn */}

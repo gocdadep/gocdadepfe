@@ -7,12 +7,17 @@ export interface Product {
   concerns: string[];
   ingredientIds: string[];
   shopeeUrl: string;
+  rawProductUrl: string;
+  source: string;
   image: string;
+  slug?: string;
   price?: string;
   rating?: number;
   reviewCount?: number;
   safetyScore?: number;
   description?: string;
+  tags?: string[];
+  ctaLabel?: string;
 }
 
 export interface Blog {

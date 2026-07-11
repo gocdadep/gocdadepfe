@@ -1,14 +1,14 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import ShopeeButton from "./ShopeeButton";
+import AffiliateCtaButton from "./AffiliateCtaButton";
 
-interface StickyShopeeCTAProps {
-  shopeeUrl: string;
+interface StickyAffiliateCTAProps {
+  affiliateUrl: string;
   subId: string;
 }
 
-export default function StickyShopeeCTA({ shopeeUrl, subId }: StickyShopeeCTAProps) {
+export default function StickyAffiliateCTA({ affiliateUrl, subId }: StickyAffiliateCTAProps) {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -25,7 +25,6 @@ export default function StickyShopeeCTA({ shopeeUrl, subId }: StickyShopeeCTAPro
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
-    // Chạy kiểm tra ngay khi mount
     handleScroll();
 
     return () => window.removeEventListener("scroll", handleScroll);
@@ -37,11 +36,11 @@ export default function StickyShopeeCTA({ shopeeUrl, subId }: StickyShopeeCTAPro
         isVisible ? "translate-y-0 opacity-100 scale-100" : "translate-y-10 opacity-0 scale-95 pointer-events-none"
       }`}
     >
-      <ShopeeButton 
-        url={shopeeUrl} 
+      <AffiliateCtaButton 
+        url={affiliateUrl} 
         subId={subId} 
-        text="Mua Shopee Mall" 
-        className="shadow-lg border border-[#EE4D2D]/10 !rounded-full py-3 px-6 text-sm" 
+        text="Xem ngay" 
+        className="shadow-lg border border-emerald-100/10 !rounded-full py-3 px-6 text-sm" 
       />
     </div>
   );

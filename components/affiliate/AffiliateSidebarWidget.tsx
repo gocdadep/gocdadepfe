@@ -1,11 +1,7 @@
 import Image from "next/image";
-import type { AffiliateProduct } from "@/types/affiliate";
-import shopeeProducts from "@/data/shopee-affiliate-products.json";
-import tikiProducts from "@/data/tiki-affiliate-products.json";
-import ShopeeButton from "./ShopeeButton";
-
-// const productsData = [...shopeeProducts, ...tikiProducts];
-const productsData = [...tikiProducts];
+import type { Product } from "@/types/product";
+import { productsData } from "@/lib/products-store";
+import AffiliateCtaButton from "./AffiliateCtaButton";
 
 interface Props {
   currentPage?: number;
@@ -13,9 +9,9 @@ interface Props {
 }
 
 export default function AffiliateSidebarWidget({ currentPage, seed }: Props) {
-  let product: AffiliateProduct | null = null;
+  let product: Product | null = null;
   try {
-    const products = productsData as AffiliateProduct[];
+    const products = productsData;
     if (currentPage && currentPage > 0) {
       const index = (currentPage - 1) % products.length;
       product = products[index] ?? null;
@@ -49,28 +45,29 @@ export default function AffiliateSidebarWidget({ currentPage, seed }: Props) {
 
       <div className="relative w-full aspect-square max-w-[200px] overflow-hidden rounded-xl bg-slate-50">
         <Image
-          src={product.imagePath}
-          alt={product.title}
+          src={product.image}
+          alt={product.name}
           width={200}
           height={200}
+          style={{ width: "auto", height: "auto" }}
           className="object-cover w-full h-full"
         />
       </div>
 
       <div className="space-y-1 w-full text-left">
         <h4 className="font-bold text-sm text-slate-900 leading-snug">
-          {product.title}
+          {product.name}
         </h4>
         <p className="text-xs text-slate-550 line-clamp-2 leading-relaxed">
           {product.description}
         </p>
       </div>
 
-      <ShopeeButton 
-        url={product.shopeeUrl} 
-        text={product.ctaLabel || "Xem trên Shopee"}
+      <AffiliateCtaButton 
+        url={product.rawProductUrl} 
+        text={product.ctaLabel || "Xem chi tiết"}
         productId={product.id}
-        productName={product.title}
+        productName={product.name}
         subId={`sidebar_${seed || "generic"}`}
         className="w-full text-xs rounded-full font-bold h-9"
       />

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import ShopeeButton from "./ShopeeButton";
+import AffiliateCtaButton from "./AffiliateCtaButton";
 
 interface AffiliateCardProps {
   product: {
@@ -32,12 +32,13 @@ export default function AffiliateCard({ product, subId }: AffiliateCardProps) {
             alt={product.name} 
             width={128} 
             height={128}
+            style={{ width: "auto", height: "auto" }}
             className="object-contain"
           />
         </div>
       )}
 
-      <ShopeeButton 
+      <AffiliateCtaButton 
         url={product.shopeeUrl} 
         productId={product.id}
         productName={product.name}

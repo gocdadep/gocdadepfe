@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { productsData } from "@/lib/tiki-products";
+import { productsData } from "@/lib/products-store";
 import ingredientsData from "@/data/ingredients.json";
 import type { Product } from "@/types/product";
 

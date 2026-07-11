@@ -3,9 +3,9 @@
 import { useState, useMemo, Suspense } from "react";
 import Image from "next/image";
 import { useSearchParams, useRouter } from "next/navigation";
-import { productsData } from "@/lib/tiki-products";
+import { productsData } from "@/lib/products-store";
 import ingredientsData from "@/data/ingredients.json";
-import ShopeeButton from "@/components/affiliate/ShopeeButton";
+import AffiliateCtaButton from "@/components/affiliate/AffiliateCtaButton";
 import InFeedAdSlot from "@/components/ads/InFeedAdSlot";
 import { Filter, RotateCcw, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -524,6 +524,7 @@ function ProductFilterContent() {
                         alt={product.name}
                         width={120}
                         height={120}
+                        style={{ width: "auto", height: "auto" }}
                         className="w-full h-full object-contain mix-blend-multiply rounded-xl"
                       />
                       <div className="absolute top-2.5 left-2.5">
@@ -585,9 +586,9 @@ function ProductFilterContent() {
                             </div>
                             <span className="text-[8px] font-bold text-zinc-400 tracking-wider uppercase">Được tài trợ</span>
                           </div>
-                          <ShopeeButton 
-                            url={product.shopeeUrl} 
-                            text="Săn Deal Shopee"
+                          <AffiliateCtaButton 
+                            url={product.rawProductUrl} 
+                            text="Xem chi tiết"
                             productId={product.id}
                             productName={product.name}
                             subId="filter_list"

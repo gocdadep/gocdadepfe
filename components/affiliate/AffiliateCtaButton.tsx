@@ -6,8 +6,8 @@ import { ShoppingCart } from "lucide-react";
 import { trackAffiliateClick } from "@/components/analytics/GA4Provider";
 import { generateStandardATLink } from "@/lib/affiliate";
 
-interface ShopeeButtonProps {
-  url: string;
+interface AffiliateCtaButtonProps {
+  url?: string;
   subId?: string;
   className?: string;
   text?: string;
@@ -15,20 +15,20 @@ interface ShopeeButtonProps {
   productName?: string;
 }
 
-export default function ShopeeButton({ 
-  url, 
+export default function AffiliateCtaButton({ 
+  url = "", 
   subId = "gocdadep_product", 
   className = "", 
-  text = "Shopee Mall",
+  text = "Xem chi tiết",
   productId = "",
   productName = ""
-}: ShopeeButtonProps) {
+}: AffiliateCtaButtonProps) {
   const pathname = usePathname();
+  if (!url) return null;
   
   const isTiki = url.includes("tiki.vn");
   const isShopee = url.includes("shopee.vn");
   const campaignId = isTiki ? "tiki" : "shopee";
-  const buttonText = text !== "Shopee Mall" ? text : (isTiki ? "Tiki Trading" : "Shopee Mall");
 
   const finalUrl = (isTiki || isShopee)
     ? generateStandardATLink({
@@ -43,7 +43,7 @@ export default function ShopeeButton({
   const handleClick = () => {
     trackAffiliateClick({
       productId: productId || url,
-      productName: productName || buttonText,
+      productName: productName || text,
       sourcePage: pathname || "unknown",
       subId: subId
     });
@@ -51,7 +51,7 @@ export default function ShopeeButton({
 
   return (
     <Link
-      data-testid="btn-shopee-affiliate"
+      data-testid="btn-affiliate-cta"
       href={redirectUrl}
       target="_blank"
       rel="nofollow noopener sponsored"
@@ -60,7 +60,7 @@ export default function ShopeeButton({
     >
       <div className="flex items-center justify-center gap-2 w-full h-full min-h-[inherit] py-2.5 px-5">
         <ShoppingCart className="w-3.5 h-3.5 shrink-0" />
-        <span>{buttonText}</span>
+        <span>{text}</span>
       </div>
     </Link>
   );

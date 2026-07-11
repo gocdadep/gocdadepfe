@@ -2,10 +2,10 @@ import { Metadata } from "next";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { productsData } from "@/lib/tiki-products";
+import { productsData } from "@/lib/products-store";
 import ingredientsData from "@/data/ingredients.json";
-import ShopeeButton from "@/components/affiliate/ShopeeButton";
-import StickyShopeeCTA from "@/components/affiliate/StickyShopeeCTA";
+import AffiliateCtaButton from "@/components/affiliate/AffiliateCtaButton";
+import StickyAffiliateCTA from "@/components/affiliate/StickyAffiliateCTA";
 import { ShieldCheck, AlertTriangle, Bot, ArrowLeft } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Card, CardContent } from "@/components/ui/card";
@@ -211,8 +211,8 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                 
                 <div className="space-y-2">
                   <div className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider">GỢI Ý DÀNH CHO BẠN</div>
-                  <ShopeeButton 
-                    url={product.shopeeUrl} 
+                  <AffiliateCtaButton 
+                    url={product.rawProductUrl} 
                     subId={`products-${product.id}`} 
                     className="w-full text-xs bg-zinc-900 hover:bg-zinc-800 text-white font-medium" 
                   />
@@ -235,7 +235,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
       </main>
 
       {/* Sticky CTA kích hoạt khi cuộn quá 30% */}
-      <StickyShopeeCTA shopeeUrl={product.shopeeUrl} subId={`products-${product.id}`} />
+      <StickyAffiliateCTA affiliateUrl={product.rawProductUrl} subId={`products-${product.id}`} />
 
       <Footer />
     </div>

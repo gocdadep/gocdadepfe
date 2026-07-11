@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardFooter } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import ShopeeButton from "@/components/affiliate/ShopeeButton";
+import AffiliateCtaButton from "@/components/affiliate/AffiliateCtaButton";
 import { FEATURE_FLAGS } from "@/lib/config/features";
 import { SKIN_TYPES } from "@/types/product";
 import type { Product, Blog } from "@/types/product";
@@ -256,6 +256,7 @@ export default function HomeClient({ initialProducts, initialBlogs }: HomeClient
                       alt={product.name}
                       width={120}
                       height={120}
+                      style={{ width: "auto", height: "auto" }}
                       className="w-full h-full object-contain mix-blend-multiply rounded-lg"
                     />
                     <div className="absolute top-2 left-2">
@@ -295,9 +296,9 @@ export default function HomeClient({ initialProducts, initialBlogs }: HomeClient
                         <span className="text-xs font-extrabold text-orange-600">{product.price || "Liên hệ"}</span>
                         <span className="text-[8px] font-bold text-zinc-350 tracking-wider">TÀI TRỢ</span>
                       </div>
-                      <ShopeeButton
-                        url={product.shopeeUrl}
-                        text="Mua tại Shopee"
+                      <AffiliateCtaButton
+                        url={product.rawProductUrl}
+                        text="Xem chi tiết"
                         productId={product.id}
                         productName={product.name}
                         subId="home_grid"
