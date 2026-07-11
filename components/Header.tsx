@@ -4,6 +4,8 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from "@/components/ui/sheet";
+import { Menu } from "lucide-react";
 
 
 interface HeaderProps {
@@ -90,15 +92,15 @@ export default function Header({ isStatic = false }: HeaderProps) {
     const isActive = pathname.startsWith(path);
     const baseClass = "text-xs font-bold uppercase tracking-wider transition-colors ";
     if (isActive) {
-      return baseClass + "text-slate-950 dark:text-white border-b-2 border-accent pb-1";
+      return baseClass + "text-zinc-900 border-b-2 border-zinc-900 pb-1";
     }
-    return baseClass + "text-slate-500 hover:text-slate-950 dark:hover:text-white pb-1 border-b-2 border-transparent";
+    return baseClass + "text-zinc-500 hover:text-zinc-900 pb-1 border-b-2 border-transparent";
   };
 
   let headerClass = "left-0 right-0 w-full transition-all duration-300 ";
   
   if (isStatic) {
-    headerClass += "relative bg-white dark:bg-zinc-900 border-b border-slate-100 dark:border-zinc-800 h-16";
+    headerClass += "relative bg-white border-b border-zinc-200 h-16";
   } else {
     headerClass += "fixed top-0 z-50 ";
     
@@ -109,9 +111,9 @@ export default function Header({ isStatic = false }: HeaderProps) {
     }
 
     if (isSticky) {
-      headerClass += "bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md border-b border-slate-100 dark:border-zinc-800 h-14 shadow-sm";
+      headerClass += "bg-white/90 backdrop-blur-md border-b border-zinc-200 h-14 shadow-sm";
     } else {
-      headerClass += "bg-white dark:bg-zinc-900 border-b border-slate-100 dark:border-zinc-800 h-16";
+      headerClass += "bg-white border-b border-zinc-200 h-16";
     }
   }
 
@@ -122,7 +124,7 @@ export default function Header({ isStatic = false }: HeaderProps) {
       <header className={headerClass} data-testid="header-container">
         <nav className="max-w-5xl mx-auto px-6 h-full flex items-center justify-between">
           <div className="flex items-center gap-8">
-            <Link href="/" className="flex items-center gap-2 font-bold text-lg text-slate-950 dark:text-white tracking-tight" data-testid="link-logo">
+            <Link href="/" className="flex items-center gap-2 font-bold text-lg text-zinc-900 tracking-tight" data-testid="link-logo">
               <Image src="/favicon-cropped.png" alt="Góc Da Đẹp Logo" width={28} height={28} className="w-7 h-7 rounded-lg" />
               <span>Góc Da Đẹp</span>
             </Link>
@@ -139,6 +141,32 @@ export default function Header({ isStatic = false }: HeaderProps) {
             </div>
           </div>
           <div className="flex items-center gap-4">
+            <Sheet>
+              <SheetTrigger asChild>
+                <button 
+                  type="button" 
+                  className="inline-flex shrink-0 items-center justify-center rounded-md text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 h-9 w-9 p-0 md:hidden cursor-pointer" 
+                  aria-label="Mở menu"
+                >
+                  <Menu className="w-5 h-5" />
+                </button>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-72 bg-white">
+                <SheetTitle className="text-left font-bold text-lg text-zinc-900">Menu</SheetTitle>
+                <SheetDescription className="sr-only">Điều hướng nhanh hệ thống Góc Da Đẹp</SheetDescription>
+                <nav className="flex flex-col gap-5 mt-8">
+                  <Link href="/phan-tich-thanh-phan" className="text-sm font-semibold text-zinc-650 hover:text-zinc-900 transition-colors">
+                    Phân tích bảng chất
+                  </Link>
+                  <Link href="/danh-muc-san-pham" className="text-sm font-semibold text-zinc-650 hover:text-zinc-900 transition-colors">
+                    Tra cứu sản phẩm
+                  </Link>
+                  <Link href="/cam-nang" className="text-sm font-semibold text-zinc-650 hover:text-zinc-900 transition-colors">
+                    Cẩm nang
+                  </Link>
+                </nav>
+              </SheetContent>
+            </Sheet>
           </div>
         </nav>
       </header>

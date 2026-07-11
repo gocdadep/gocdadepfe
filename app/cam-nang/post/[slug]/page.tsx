@@ -1,0 +1,152 @@
+import { Metadata } from "next";
+import Link from "next/link";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import blogsData from "@/data/blogs.json";
+import productsData from "@/data/products.json";
+import ShopeeButton from "@/components/affiliate/ShopeeButton";
+import { BookOpen, Calendar, ArrowLeft } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import Image from "next/image";
+
+export async function generateStaticParams() {
+  return blogsData.map((b) => ({
+    slug: b.slug,
+  }));
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const resolvedParams = await params;
+  const blog = blogsData.find((b) => b.slug === resolvedParams.slug);
+  return {
+    title: `${blog?.title || "Bài viết cẩm nang"} — gocdadep.com`,
+    description: blog?.metaDescription || "Cẩm nang và chia sẻ kiến thức skincare khoa học.",
+    alternates: {
+      canonical: `https://gocdadep.com/cam-nang/post/${resolvedParams.slug}`,
+    },
+  };
+}
+
+export default async function BlogDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+  const resolvedParams = await params;
+  const blog = blogsData.find((b) => b.slug === resolvedParams.slug);
+
+  if (!blog) {
+    return (
+      <div className="min-h-screen flex flex-col justify-between bg-white text-zinc-900">
+        <Header />
+        <main className="max-w-md mx-auto px-6 py-20 text-center space-y-4 pt-24">
+          <h1 className="text-2xl font-bold text-zinc-900">Không tìm thấy bài viết</h1>
+          <Link href="/cam-nang" className="text-zinc-650 underline font-semibold flex items-center justify-center gap-1.5">
+            <ArrowLeft className="w-4 h-4" /> Quay lại cẩm nang
+          </Link>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  // Lấy các sản phẩm liên quan từ relatedProductIds
+  const relatedProducts = productsData.filter((p) => blog.relatedProductIds.includes(p.id));
+
+  return (
+    <div className="min-h-screen bg-white text-zinc-900 flex flex-col justify-between selection:bg-zinc-100">
+      <Header />
+
+      <main className="max-w-5xl mx-auto px-6 py-12 flex-grow w-full flex flex-col md:flex-row gap-12 pt-24 z-10 relative">
+        
+        {/* Cột trái: Nội dung bài viết */}
+        <article className="flex-grow md:w-[65%] max-w-[720px] space-y-6 text-left">
+          <div className="space-y-4">
+            <Link href="/cam-nang" className="inline-flex items-center gap-1 text-xs text-zinc-500 hover:text-zinc-900 font-semibold transition">
+              <ArrowLeft className="w-3.5 h-3.5" />
+              <span>Quay lại cẩm nang</span>
+            </Link>
+            
+            <div className="flex flex-wrap gap-1.5">
+              {blog.tags.map((tag) => (
+                <Badge key={tag} variant="secondary" className="text-[9px] font-bold uppercase tracking-wider bg-zinc-100 hover:bg-zinc-200 text-zinc-800 border-none">
+                  {tag}
+                </Badge>
+              ))}
+            </div>
+
+            <h1 className="text-2xl md:text-4xl font-bold tracking-tight text-zinc-900 leading-tight">
+              {blog.title}
+            </h1>
+
+            <div className="flex items-center gap-1 text-[10px] text-zinc-400 font-bold uppercase tracking-wider">
+              <Calendar className="w-3.5 h-3.5" />
+              <span>Đăng ngày {new Date(blog.publishedAt).toLocaleDateString("vi-VN")}</span>
+            </div>
+          </div>
+
+          <Separator className="bg-zinc-200" />
+
+          {/* Typography sạch sẽ tối ưu cho đọc tin tức */}
+          <div className="prose prose-zinc max-w-none text-zinc-700 leading-relaxed font-normal text-base md:text-lg space-y-4">
+            <p className="font-semibold text-zinc-900">{blog.metaDescription}</p>
+            {/* Split Markdown đơn giản để render thô */}
+            {blog.contentMd.split("\n\n").map((para, i) => {
+              if (para.startsWith("# ")) return <h1 key={i} className="text-2xl font-bold text-zinc-950 mt-6 mb-3">{para.replace("# ", "")}</h1>;
+              if (para.startsWith("## ")) return <h2 key={i} className="text-xl font-bold text-zinc-950 mt-5 mb-2.5">{para.replace("## ", "")}</h2>;
+              return <p key={i} className="text-sm md:text-base leading-relaxed">{para}</p>;
+            })}
+          </div>
+        </article>
+
+        {/* Cột phải: Sidebar AdSense + Gợi ý Shopee */}
+        <aside className="md:w-[35%] space-y-6">
+          <div className="sticky top-24 space-y-6">
+            
+            {/* Box AdSense */}
+            <div className="ad-container ad-sidebar min-h-[250px] w-full flex items-center justify-center border border-zinc-250 rounded-xl bg-zinc-50 p-4">
+              <ins className="adsbygoogle"
+                   style={{ display: "block" }}
+                   data-ad-client="ca-pub-xxx"
+                   data-ad-slot="xxx"
+                   data-ad-format="rectangle"></ins>
+            </div>
+
+            {/* Hộp sản phẩm liên quan */}
+            {relatedProducts.length > 0 && (
+              <Card className="border border-zinc-150 bg-zinc-50/50 shadow-none text-left rounded-xl">
+                <CardContent className="p-5 space-y-4">
+                  <div className="flex items-center gap-1.5 text-zinc-900 font-bold text-xs uppercase tracking-wider">
+                    <BookOpen className="w-4 h-4 text-emerald-700" />
+                    <span>Sản phẩm liên quan</span>
+                  </div>
+                  
+                  <div className="space-y-4 divide-y divide-zinc-150">
+                    {relatedProducts.map((product) => (
+                      <div key={product.id} className="pt-3 first:pt-0 space-y-2.5">
+                        <div className="flex gap-3 items-start">
+                          <div className="w-12 h-12 bg-white rounded-lg overflow-hidden flex-shrink-0 flex items-center justify-center border border-zinc-150">
+                            <Image src={product.image} alt={product.name} width={40} height={40} className="object-contain mix-blend-multiply" />
+                          </div>
+                          <div className="space-y-0.5">
+                            <span className="text-[9px] uppercase font-bold text-zinc-400 block">{product.brand}</span>
+                            <h4 className="text-xs font-semibold text-zinc-900 line-clamp-2 leading-snug">{product.name}</h4>
+                          </div>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <span className="text-[9px] font-bold text-zinc-400 uppercase tracking-wide">Được tài trợ</span>
+                          <ShopeeButton url={product.shopeeUrl} className="h-7 px-3 text-[10px] rounded-md" />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+            
+          </div>
+        </aside>
+      </main>
+
+      <Footer />
+    </div>
+  );
+}

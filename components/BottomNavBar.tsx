@@ -14,7 +14,7 @@ export default function BottomNavBar() {
   ];
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-white/95 backdrop-blur-md border-t border-[#c0c9c0] shadow-lg">
+    <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-white/95 backdrop-blur-md border-t border-zinc-200 shadow-lg">
       <div className="flex justify-around items-center h-16">
         {navItems.map(({ href, label, icon: Icon }) => {
           const isActive = pathname === href || (href !== "/" && pathname.startsWith(href));
@@ -23,7 +23,7 @@ export default function BottomNavBar() {
               key={href}
               href={href}
               className={`flex flex-col items-center justify-center w-1/4 gap-1 h-full min-h-[48px] transition-colors ${
-                isActive ? "text-primary-container font-semibold" : "text-[#404942] hover:text-primary-container"
+                isActive ? "text-zinc-900 font-semibold" : "text-zinc-400 hover:text-zinc-650"
               }`}
             >
               <Icon className="w-5 h-5" />

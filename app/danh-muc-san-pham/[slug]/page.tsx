@@ -6,6 +6,11 @@ import productsData from "@/data/products.json";
 import ingredientsData from "@/data/ingredients.json";
 import ShopeeButton from "@/components/affiliate/ShopeeButton";
 import StickyShopeeCTA from "@/components/affiliate/StickyShopeeCTA";
+import { ShieldCheck, AlertTriangle, Bot, ArrowLeft } from "lucide-react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
 
 export async function generateStaticParams() {
   return productsData.map((p) => ({
@@ -31,12 +36,12 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
 
   if (!product) {
     return (
-      <div className="min-h-screen flex flex-col justify-between bg-background">
+      <div className="min-h-screen flex flex-col justify-between bg-white text-zinc-900">
         <Header />
         <main className="max-w-md mx-auto px-6 py-20 text-center space-y-4 pt-24">
-          <h1 className="font-display text-headline-lg text-accent">Không tìm thấy sản phẩm</h1>
-          <Link href="/danh-muc-san-pham" className="text-accent underline font-semibold">
-            Quay lại tra cứu
+          <h1 className="text-2xl font-bold text-zinc-900">Không tìm thấy sản phẩm</h1>
+          <Link href="/danh-muc-san-pham" className="text-zinc-650 underline font-semibold flex items-center justify-center gap-1.5">
+            <ArrowLeft className="w-4 h-4" /> Quay lại tra cứu
           </Link>
         </main>
         <Footer />
@@ -77,6 +82,19 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
     warnings.push("Phát hiện thành phần Paraben: Chất bảo quản nhóm Paraben, có thể gây quá mẫn đối với da đặc biệt nhạy cảm.");
   }
 
+  const getSafetyStyle = (level: string) => {
+    switch (level) {
+      case "SAFE":
+        return { label: "An toàn", badgeClass: "bg-green-50 text-green-700 border-green-200 hover:bg-green-50" };
+      case "CAUTION":
+        return { label: "Lưu ý", badgeClass: "bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-50" };
+      case "DANGER":
+        return { label: "Cảnh báo", badgeClass: "bg-red-50 text-red-700 border-red-200 hover:bg-red-50" };
+      default:
+        return { label: "Chưa rõ", badgeClass: "bg-zinc-100 text-zinc-500 border-zinc-200 hover:bg-zinc-100" };
+    }
+  };
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -90,26 +108,25 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
   };
 
   return (
-    <div className="min-h-screen bg-background text-on-surface flex flex-col justify-between transition-colors duration-200">
+    <div className="min-h-screen bg-white text-zinc-900 flex flex-col justify-between selection:bg-zinc-100">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <Header />
       
-      <main className="max-w-max-width mx-auto px-gutter py-xl flex-grow w-full flex flex-col md:flex-row gap-lg pt-24 z-10">
+      <main className="max-w-5xl mx-auto px-6 py-12 flex-grow w-full flex flex-col md:flex-row gap-8 pt-24 z-10 text-left">
         {/* Main Analysis Content */}
-        <div className="flex-grow md:w-[70%] space-y-md">
+        <div className="flex-grow md:w-[70%] space-y-6">
+          
           {/* AI Summary Banner */}
-          <section className="bg-primary-container/5 rounded-xl p-md border border-outline-variant flex items-start gap-md">
-            <div className="bg-primary-container/10 p-sm rounded-lg text-accent shrink-0">
-              <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>
-                smart_toy
-              </span>
+          <section className="bg-zinc-50 rounded-xl p-5 border border-zinc-200 flex items-start gap-4">
+            <div className="bg-zinc-100 p-2.5 rounded-lg text-zinc-900 shrink-0">
+              <Bot className="w-5 h-5 text-zinc-700" />
             </div>
             <div>
-              <h2 className="font-headline-md text-headline-md text-accent mb-xs">Tóm tắt AI: An toàn &amp; Hiệu quả</h2>
-              <p className="text-on-surface-variant font-body-md leading-relaxed">
+              <h2 className="text-base font-bold text-zinc-900 mb-1">Tóm tắt AI: An toàn &amp; Hiệu quả</h2>
+              <p className="text-zinc-500 font-normal leading-relaxed text-sm">
                 {aiSummary}
               </p>
             </div>
@@ -117,76 +134,54 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
 
           {/* Danger Warning Banner */}
           {warnings.length > 0 && (
-            <div className="space-y-xs">
+            <div className="space-y-3">
               {warnings.map((warn, index) => (
-                <section key={index} className="bg-error-container text-error p-md rounded-lg flex items-center gap-md border border-outline-variant">
-                  <span className="material-symbols-outlined shrink-0" style={{ fontVariationSettings: "'FILL' 1" }}>
-                    warning
-                  </span>
-                  <p className="font-label-md text-label-md">
-                    <span className="font-bold uppercase">Cảnh báo: </span>{warn}
-                  </p>
-                </section>
+                <Alert key={index} variant="destructive" className="border-red-200 bg-red-50 text-red-700">
+                  <AlertTriangle className="w-4 h-4 shrink-0 text-red-700" />
+                  <AlertTitle className="font-bold text-sm">Cảnh báo hoạt chất</AlertTitle>
+                  <AlertDescription className="text-xs font-medium text-red-650">
+                    {warn}
+                  </AlertDescription>
+                </Alert>
               ))}
             </div>
           )}
 
           {/* Health Score Section */}
-          <div className="grid grid-cols-3 gap-md">
-            {/* Safe Circle */}
-            <div className="bg-white p-md rounded-xl border border-outline-variant flex flex-col items-center justify-center text-center shadow-sm">
-              <div className="relative w-20 h-20 flex items-center justify-center mb-xs">
-                <svg className="absolute inset-0 transform -rotate-90 w-20 h-20">
-                  <circle className="text-surface-container-high" cx="40" cy="40" fill="transparent" r="36" stroke="currentColor" strokeWidth="6"></circle>
-                  <circle className="text-success-text transition-all duration-1000" cx="40" cy="40" fill="transparent" r="36" stroke="currentColor" strokeDasharray="226" strokeDashoffset={226 - (226 * safePercent) / 100} strokeWidth="6"></circle>
-                </svg>
-                <span className="font-headline-lg text-headline-lg text-on-surface">{safePercent}%</span>
-              </div>
-              <span className="font-label-sm text-label-sm uppercase tracking-wider text-success-text">An toàn</span>
+          <div className="grid grid-cols-3 gap-4">
+            {/* Safe Box */}
+            <div className="bg-white p-5 rounded-xl border border-zinc-200 flex flex-col items-center justify-center text-center shadow-sm">
+              <span className="text-3xl font-bold tracking-tight text-green-700 mb-1">{safePercent}%</span>
+              <span className="text-[10px] font-bold uppercase tracking-wider text-green-700">An toàn</span>
             </div>
-            {/* Warning Circle */}
-            <div className="bg-white p-md rounded-xl border border-outline-variant flex flex-col items-center justify-center text-center shadow-sm">
-              <div className="relative w-20 h-20 flex items-center justify-center mb-xs">
-                <svg className="absolute inset-0 transform -rotate-90 w-20 h-20">
-                  <circle className="text-surface-container-high" cx="40" cy="40" fill="transparent" r="36" stroke="currentColor" strokeWidth="6"></circle>
-                  <circle className="text-tertiary transition-all duration-1000" cx="40" cy="40" fill="transparent" r="36" stroke="currentColor" strokeDasharray="226" strokeDashoffset={226 - (226 * cautionPercent) / 100} strokeWidth="6"></circle>
-                </svg>
-                <span className="font-headline-lg text-headline-lg text-on-surface">{cautionPercent}%</span>
-              </div>
-              <span className="font-label-sm text-label-sm uppercase tracking-wider text-tertiary">Lưu ý</span>
+            {/* Warning Box */}
+            <div className="bg-white p-5 rounded-xl border border-zinc-200 flex flex-col items-center justify-center text-center shadow-sm">
+              <span className="text-3xl font-bold tracking-tight text-amber-700 mb-1">{cautionPercent}%</span>
+              <span className="text-[10px] font-bold uppercase tracking-wider text-amber-700">Lưu ý</span>
             </div>
-            {/* Danger Circle */}
-            <div className="bg-white p-md rounded-xl border border-outline-variant flex flex-col items-center justify-center text-center shadow-sm">
-              <div className="relative w-20 h-20 flex items-center justify-center mb-xs">
-                <svg className="absolute inset-0 transform -rotate-90 w-20 h-20">
-                  <circle className="text-surface-container-high" cx="40" cy="40" fill="transparent" r="36" stroke="currentColor" strokeWidth="6"></circle>
-                  <circle className="text-error transition-all duration-1000" cx="40" cy="40" fill="transparent" r="36" stroke="currentColor" strokeDasharray="226" strokeDashoffset={226 - (226 * dangerPercent) / 100} strokeWidth="6"></circle>
-                </svg>
-                <span className="font-headline-lg text-headline-lg text-on-surface">{dangerPercent}%</span>
-              </div>
-              <span className="font-label-sm text-label-sm uppercase tracking-wider text-error">Nguy hiểm</span>
+            {/* Danger Box */}
+            <div className="bg-white p-5 rounded-xl border border-zinc-200 flex flex-col items-center justify-center text-center shadow-sm">
+              <span className="text-3xl font-bold tracking-tight text-red-700 mb-1">{dangerPercent}%</span>
+              <span className="text-[10px] font-bold uppercase tracking-wider text-red-700">Cảnh báo</span>
             </div>
           </div>
 
           {/* Ingredient Grid */}
-          <section className="space-y-sm">
-            <h3 className="font-headline-lg text-headline-lg text-accent">Danh sách thành phần ({total})</h3>
-            <div className="grid grid-cols-1 gap-xs">
+          <section className="space-y-4">
+            <h3 className="text-lg font-bold text-zinc-900 tracking-tight">Danh sách thành phần ({total})</h3>
+            
+            <div className="grid grid-cols-1 gap-3">
               {ingredients.map((ing, index) => {
-                let badgeClass = "bg-surface-container text-on-surface-variant";
-                if (ing.safetyLevel === "SAFE") badgeClass = "bg-success-bg text-success-text";
-                else if (ing.safetyLevel === "CAUTION") badgeClass = "bg-tertiary-fixed text-tertiary";
-                else if (ing.safetyLevel === "DANGER") badgeClass = "bg-error-container text-error";
-
+                const style = getSafetyStyle(ing.safetyLevel);
                 return (
-                  <div key={index} className="group bg-white border border-outline-variant rounded-lg p-md hover:shadow-md transition-shadow flex justify-between items-center">
-                    <div className="flex flex-col text-left">
-                      <span className="font-bold text-on-surface group-hover:text-accent transition-colors">{ing.name}</span>
-                      <span className="text-on-surface-variant text-label-sm">{ing.description}</span>
+                  <div key={index} className="group bg-white border border-zinc-200 rounded-lg p-4 hover:shadow-sm transition flex justify-between items-center gap-4">
+                    <div className="flex flex-col text-left space-y-0.5">
+                      <span className="font-semibold text-sm text-zinc-900 transition-colors">{ing.name}</span>
+                      <span className="text-zinc-500 text-xs">{ing.description}</span>
                     </div>
-                    <span className={`px-3 py-1 rounded-full font-label-sm text-label-sm shrink-0 capitalize ${badgeClass}`}>
-                      {ing.safetyLevel.toLowerCase()}
-                    </span>
+                    <Badge variant="outline" className={`text-[9px] font-bold px-2.5 py-1 rounded-full shrink-0 uppercase tracking-widest ${style.badgeClass}`}>
+                      {style.label}
+                    </Badge>
                   </div>
                 );
               })}
@@ -195,36 +190,37 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
         </div>
 
         {/* Sidebar Widget */}
-        <aside className="md:w-[30%] space-y-md">
-          <div className="sticky top-24 space-y-md">
-            <div className="bg-white border border-outline-variant rounded-xl overflow-hidden shadow-sm text-left">
-              <div className="aspect-square bg-surface-container-low flex items-center justify-center text-accent text-6xl">
+        <aside className="md:w-[30%] space-y-6">
+          <div className="sticky top-24 space-y-6">
+            <Card className="border border-zinc-200 rounded-xl overflow-hidden shadow-sm text-left">
+              <div className="aspect-square bg-zinc-50 flex items-center justify-center text-zinc-400 text-6xl">
                 🧴
               </div>
-              <div className="p-md space-y-sm">
-                <h4 className="font-headline-md text-headline-md text-accent">{product.name}</h4>
-                <p className="text-on-surface-variant text-label-md">Thương hiệu: <span className="font-bold">{product.brand}</span></p>
-                <div className="pt-sm border-t border-outline-variant">
-                  <div className="mb-sm text-xs font-bold text-on-surface-variant">GỢI Ý CHO BẠN</div>
+              <CardContent className="p-5 space-y-3">
+                <h4 className="font-bold text-base text-zinc-900 leading-snug">{product.name}</h4>
+                <p className="text-zinc-550 text-xs">Thương hiệu: <span className="font-bold text-zinc-800">{product.brand}</span></p>
+                
+                <Separator className="bg-zinc-100" />
+                
+                <div className="space-y-2">
+                  <div className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider">GỢI Ý DÀNH CHO BẠN</div>
                   <ShopeeButton 
                     url={product.shopeeUrl} 
                     subId="gocdadep_product" 
-                    className="w-full text-sm" 
+                    className="w-full text-xs bg-zinc-900 hover:bg-zinc-800 text-white font-medium" 
                   />
                 </div>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
 
             {/* Expertise Box */}
-            <div className="bg-surface-container-low p-md rounded-xl space-y-sm text-left border border-outline-variant">
-              <div className="flex items-center gap-sm">
-                <span className="material-symbols-outlined text-accent" style={{ fontVariationSettings: "'FILL' 1" }}>
-                  verified
-                </span>
-                <span className="font-label-md text-label-md font-bold text-accent">Chuyên gia khuyên dùng</span>
+            <div className="bg-zinc-50 p-5 rounded-xl space-y-2 text-left border border-zinc-200">
+              <div className="flex items-center gap-1.5">
+                <ShieldCheck className="w-4 h-4 text-emerald-700" />
+                <span className="font-bold text-xs text-zinc-900 uppercase tracking-wider">Khuyên dùng khoa học</span>
               </div>
-              <p className="text-label-sm text-on-surface-variant leading-relaxed">
-                Kết quả được tổng hợp từ dữ liệu khoa học tin cậy. Vui lòng tham khảo ý kiến bác sĩ chuyên khoa da liễu trước khi thay đổi liệu trình skincare của bạn.
+              <p className="text-xs text-zinc-500 leading-relaxed font-medium">
+                Kết quả được tổng hợp khách quan từ các nghiên cứu khoa học. Vui lòng tham khảo ý kiến bác sĩ chuyên khoa da liễu để xây dựng routine phù hợp nhất cho làn da của bạn.
               </p>
             </div>
           </div>
