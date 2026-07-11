@@ -6,6 +6,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import productsData from "@/data/products.json";
 import ingredientsData from "@/data/ingredients.json";
 import ShopeeButton from "@/components/affiliate/ShopeeButton";
+import InFeedAdSlot from "@/components/ads/InFeedAdSlot";
 import { Filter, RotateCcw, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -507,9 +508,11 @@ function ProductFilterContent() {
 
           {filteredProducts.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {filteredProducts.map((product) => {
+              {filteredProducts.flatMap((product, idx) => {
                 const safety = getProductSafety(product.ingredientIds);
-                return (
+                const isAdInsert = (idx + 1) % 5 === 0;
+                
+                const cardElement = (
                   <Card
                     key={product.id}
                     className="overflow-hidden border border-zinc-100 flex flex-col justify-between shadow-sm hover:shadow-md hover:scale-[1.02] transition-all duration-200 rounded-2xl bg-white"
@@ -592,6 +595,14 @@ function ProductFilterContent() {
                     </CardContent>
                   </Card>
                 );
+
+                if (isAdInsert) {
+                  return [
+                    cardElement,
+                    <InFeedAdSlot key={`ad-${product.id}`} index={Math.ceil((idx + 1) / 5)} />
+                  ];
+                }
+                return [cardElement];
               })}
             </div>
           ) : (

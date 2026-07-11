@@ -7,6 +7,8 @@ import blogsData from "@/data/blogs.json";
 import productsData from "@/data/products.json";
 import ShopeeButton from "@/components/affiliate/ShopeeButton";
 import IngredientCTABlock from "@/components/feature/IngredientCTABlock";
+import BottomAnchorAd from "@/components/ads/BottomAnchorAd";
+import { FEATURE_FLAGS } from "@/lib/config/features";
 import { BookOpen, Calendar, ArrowLeft } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
@@ -166,14 +168,24 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
         <aside className="md:w-[35%] space-y-6">
           <div className="sticky top-24 space-y-6">
             
-            {/* Box AdSense */}
-            <div className="ad-container ad-sidebar min-h-[250px] w-full flex items-center justify-center border border-zinc-250 rounded-xl bg-zinc-50 p-4">
-              <ins className="adsbygoogle"
-                   style={{ display: "block" }}
-                   data-ad-client="ca-pub-xxx"
-                   data-ad-slot="xxx"
-                   data-ad-format="rectangle"></ins>
-            </div>
+            {/* Box AdSense / Affiliate Placeholder */}
+            {FEATURE_FLAGS.ENABLE_ADSENSE ? (
+              <div className="ad-container ad-sidebar min-h-[250px] w-full flex items-center justify-center border border-zinc-250 rounded-xl bg-zinc-50 p-4">
+                <ins className="adsbygoogle"
+                     style={{ display: "block" }}
+                     data-ad-client="ca-pub-xxx"
+                     data-ad-slot="xxx"
+                     data-ad-format="rectangle"></ins>
+              </div>
+            ) : (
+              <div className="overflow-hidden border border-zinc-150 bg-gradient-to-br from-emerald-50 to-teal-50 rounded-xl p-5 text-left space-y-4">
+                <span className="text-[9px] font-bold text-emerald-700 uppercase tracking-wider block">QUÀ TẶNG THÀNH VIÊN</span>
+                <h4 className="font-bold text-xs text-zinc-900 leading-snug">Nhận miễn phí cẩm nang Routine mụn và voucher Shopee 50k!</h4>
+                <Link href={buildFilterUrl()} className="block text-center py-2 bg-emerald-500 hover:bg-emerald-600 text-white text-[10px] font-bold rounded-full transition">
+                  Khám phá ngay →
+                </Link>
+              </div>
+            )}
 
             {/* Hộp sản phẩm liên quan (Desktop Only) */}
             {relatedProducts.length > 0 && (
@@ -226,6 +238,10 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
       </main>
 
       <Footer />
+      <BottomAnchorAd 
+        contextSlug={blog.slug} 
+        contextConcern={blog.concerns?.[0]} 
+      />
     </div>
   );
 }

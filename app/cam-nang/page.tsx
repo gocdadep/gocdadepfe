@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { BLOG_CATEGORIES } from "@/types/product";
 import type { Blog } from "@/types/product";
+import { FEATURE_FLAGS } from "@/lib/config/features";
 
 export const metadata: Metadata = {
   title: "Cẩm nang & Tin tức Skincare khoa học — gocdadep.com",
@@ -126,16 +127,18 @@ export default async function BlogListPage({ searchParams }: PageProps) {
         )}
 
         {/* Khung quảng cáo AdSense chống CLS */}
-        <div className="pt-4">
-          <div className="ad-container ad-h-banner min-h-[250px] w-full flex items-center justify-center border border-zinc-200 rounded-xl bg-white">
-            <ins className="adsbygoogle"
-                 style={{ display: "block" }}
-                 data-ad-client="ca-pub-xxx"
-                 data-ad-slot="xxx"
-                 data-ad-format="auto"
-                 data-full-width-responsive="true"></ins>
+        {FEATURE_FLAGS.ENABLE_ADSENSE && (
+          <div className="pt-4">
+            <div className="ad-container ad-h-banner min-h-[250px] w-full flex items-center justify-center border border-zinc-200 rounded-xl bg-white">
+              <ins className="adsbygoogle"
+                   style={{ display: "block" }}
+                   data-ad-client="ca-pub-xxx"
+                   data-ad-slot="xxx"
+                   data-ad-format="auto"
+                   data-full-width-responsive="true"></ins>
+            </div>
           </div>
-        </div>
+        )}
       </main>
 
       <Footer />

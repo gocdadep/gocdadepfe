@@ -4,16 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import productsData from "@/data/products.json";
 
-interface Product {
-  id: string;
-  name: string;
-  brand: string;
-  category: string;
-  ingredientIds: string[];
-  shopeeUrl: string;
-  affiliateSubId: string;
-  image: string;
-}
+import { Product } from "@/types/product";
 
 export default function ProductSearch() {
   const [query, setQuery] = useState("");
