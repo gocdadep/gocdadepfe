@@ -185,7 +185,7 @@ function ProductFilterContent() {
     if (hasDanger) {
       return { 
         label: "CẨN TRỌNG", 
-        badgeClass: "bg-red-50 text-red-700 border-red-100 hover:bg-red-50", 
+        badgeClass: "bg-rose-50 text-red-700 border-red-100 font-bold hover:bg-rose-50", 
         textColor: "text-red-700", 
         barColor: "bg-red-500",
         percent: 45
@@ -193,7 +193,7 @@ function ProductFilterContent() {
     }
     if (hasCaution) {
       return { 
-        label: "CẦN TRỌNG", 
+        label: "CẦN LƯU Ý", 
         badgeClass: "bg-amber-50 text-amber-700 border-amber-100 hover:bg-amber-50", 
         textColor: "text-amber-700", 
         barColor: "bg-amber-500",
@@ -359,7 +359,7 @@ function ProductFilterContent() {
             data-testid="input-product-search"
             type="text"
             className="pl-9 h-10 w-full rounded-xl border border-zinc-200 bg-zinc-50 text-sm placeholder-zinc-400 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-emerald-800 transition-all"
-            placeholder="Tìm kiếm mỹ phẩm, thành phần..."
+            placeholder="Gõ hoạt chất (BHA, Retinol...) hoặc tên sản phẩm..."
             value={searchQuery}
             onChange={(e) => {
               setSearchQuery(e.target.value);
@@ -415,7 +415,7 @@ function ProductFilterContent() {
             data-testid="input-product-search"
             type="text"
             className="pl-9 h-9 w-full rounded-lg border border-zinc-150 bg-white text-xs placeholder-zinc-400 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-emerald-800 focus-visible:border-transparent transition-all"
-            placeholder="Tìm kiếm sản phẩm, thương hiệu..."
+            placeholder="Gõ hoạt chất (BHA, Retinol...) hoặc tên sản phẩm..."
             value={searchQuery}
             onChange={(e) => {
               setSearchQuery(e.target.value);
@@ -432,53 +432,53 @@ function ProductFilterContent() {
           <div className="flex flex-wrap items-center gap-2">
             <button
               onClick={() => handleQuickFilter("no-alcohol")}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition duration-200 ${
+              className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition duration-200 cursor-pointer ${
                 excludes.includes("alcohol-denat")
                   ? "bg-emerald-800 border-emerald-800 text-white"
                   : "bg-zinc-50 border-zinc-150 text-slate-800 hover:bg-zinc-100"
               }`}
             >
-              [Không Cồn] {excludes.includes("alcohol-denat") && "✕"}
+              Không Cồn {excludes.includes("alcohol-denat") && "✕"}
             </button>
             <button
               onClick={() => handleQuickFilter("no-paraben")}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition duration-200 ${
+              className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition duration-200 cursor-pointer ${
                 excludes.includes("methylparaben")
                   ? "bg-emerald-800 border-emerald-800 text-white"
                   : "bg-zinc-50 border-zinc-150 text-slate-800 hover:bg-zinc-100"
               }`}
             >
-              [Không Paraben] {excludes.includes("methylparaben") && "✕"}
+              Không Paraben {excludes.includes("methylparaben") && "✕"}
             </button>
             <button
               onClick={() => handleQuickFilter("has-retinol")}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition duration-200 ${
+              className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition duration-200 cursor-pointer ${
                 includes.includes("retinol")
                   ? "bg-emerald-800 border-emerald-800 text-white"
                   : "bg-zinc-50 border-zinc-150 text-slate-800 hover:bg-zinc-100"
               }`}
             >
-              [Có Retinol] {includes.includes("retinol") && "✕"}
+              Có Retinol {includes.includes("retinol") && "✕"}
             </button>
             <button
               onClick={() => handleQuickFilter("has-niacinamide")}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition duration-200 ${
+              className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition duration-200 cursor-pointer ${
                 includes.includes("niacinamide")
                   ? "bg-emerald-800 border-emerald-800 text-white"
                   : "bg-zinc-50 border-zinc-150 text-slate-800 hover:bg-zinc-100"
               }`}
             >
-              [Có Niacinamide] {includes.includes("niacinamide") && "✕"}
+              Có Niacinamide {includes.includes("niacinamide") && "✕"}
             </button>
             <button
               onClick={() => handleQuickFilter("has-vitamin-c")}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition duration-200 ${
+              className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition duration-200 cursor-pointer ${
                 includes.includes("vitamin-c")
                   ? "bg-emerald-800 border-emerald-800 text-white"
                   : "bg-zinc-50 border-zinc-150 text-slate-800 hover:bg-zinc-100"
               }`}
             >
-              [Vitamin C] {includes.includes("vitamin-c") && "✕"}
+              Vitamin C {includes.includes("vitamin-c") && "✕"}
             </button>
 
             {(includes.length > 0 || excludes.length > 0 || selectedCategory !== "all" || selectedSkinType !== "all" || selectedConcern !== "") && (
@@ -518,13 +518,13 @@ function ProductFilterContent() {
                     className="overflow-hidden border border-zinc-100 flex flex-col justify-between shadow-sm hover:shadow-md hover:scale-[1.02] transition-all duration-200 rounded-2xl bg-white"
                   >
                     {/* Image Area */}
-                    <div className="h-44 md:h-36 bg-zinc-50/50 flex items-center justify-center relative p-3">
+                    <div className="h-44 md:h-36 bg-zinc-50/50 flex items-center justify-center relative p-3 rounded-t-2xl">
                       <Image
                         src={product.image}
                         alt={product.name}
                         width={120}
                         height={120}
-                        className="w-full h-full object-contain mix-blend-multiply rounded-lg"
+                        className="w-full h-full object-contain mix-blend-multiply rounded-xl"
                       />
                       <div className="absolute top-2.5 left-2.5">
                         <Badge variant="outline" className={`${safety.badgeClass} text-[9px] font-bold py-0.5 px-2 rounded-full border`}>
@@ -536,10 +536,10 @@ function ProductFilterContent() {
                     {/* Content Area */}
                     <CardContent className="p-4 flex-1 flex flex-col justify-between gap-3 text-left">
                       <div className="space-y-1">
-                        <span className="text-[9px] uppercase font-bold tracking-widest text-zinc-400 block">
+                        <span className="text-[10px] uppercase font-bold tracking-widest text-zinc-400 block">
                           {product.brand}
                         </span>
-                        <h4 className="font-bold text-xs leading-snug line-clamp-2 h-8 text-slate-800">
+                        <h4 className="font-bold text-xs leading-snug line-clamp-2 h-8 md:h-9 text-slate-800">
                           {product.name}
                         </h4>
                         
@@ -555,7 +555,7 @@ function ProductFilterContent() {
                           <span className="text-[9px] text-zinc-400 font-bold">{(product.rating || 4.5).toFixed(1)}</span>
                         </div>
 
-                        <p className="text-[10px] text-zinc-500 line-clamp-1 mt-1">
+                        <p className="text-[10px] text-zinc-500 line-clamp-2 h-7 md:h-8 leading-relaxed mt-1">
                           {product.description}
                         </p>
                       </div>
@@ -578,13 +578,16 @@ function ProductFilterContent() {
 
                         {/* Giá và nút Shopee */}
                         <div className="border-t border-zinc-100 pt-3 flex flex-col gap-2">
-                          <div className="flex items-center justify-between">
-                            <span className="text-xs font-extrabold text-orange-600">{product.price || "Liên hệ"}</span>
-                            <span className="text-[8px] font-bold text-zinc-350 tracking-wider">TÀI TRỢ</span>
+                          <div className="flex items-end justify-between">
+                            <div className="flex flex-col">
+                              <span className="text-[8px] font-bold text-zinc-400 leading-none mb-1">Giá tham khảo</span>
+                              <span className="text-xs font-extrabold text-orange-600 leading-none">{product.price || "Liên hệ"}</span>
+                            </div>
+                            <span className="text-[8px] font-bold text-zinc-400 tracking-wider uppercase">Được tài trợ</span>
                           </div>
                           <ShopeeButton 
                             url={product.shopeeUrl} 
-                            text="Mua tại Shopee"
+                            text="Săn Deal Shopee"
                             productId={product.id}
                             productName={product.name}
                             subId="filter_list"

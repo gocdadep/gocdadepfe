@@ -71,7 +71,7 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
       <main className="max-w-5xl mx-auto px-6 py-12 flex-grow w-full flex flex-col md:flex-row gap-12 pt-24 z-10 relative">
         
         {/* Cột trái: Nội dung bài viết */}
-        <article className="flex-grow md:w-[65%] max-w-[720px] space-y-6 text-left">
+        <article className="flex-grow md:w-[65%] max-w-[720px] space-y-6 text-left w-full">
           <div className="space-y-4">
             <Link href="/cam-nang" className="inline-flex items-center gap-1 text-xs text-zinc-500 hover:text-zinc-900 font-semibold transition">
               <ArrowLeft className="w-3.5 h-3.5" />
@@ -112,8 +112,23 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
                 elements.push(<p key={i} className="text-sm md:text-base leading-relaxed">{para}</p>);
               }
 
-              // US-004: Tự động chèn khối gợi ý IngredientCTABlock sau đoạn văn thứ 3 (hoặc index 2)
-              if (i === 2 && blog.tags_ingredients && blog.tags_ingredients.length > 0) {
+              // US-005: Chèn inline banner gợi ý dẹt sau đoạn văn thứ 3 (index 2)
+              if (i === 2) {
+                elements.push(
+                  <div key="inline-gift-banner" className="my-6 overflow-hidden border border-emerald-100 bg-gradient-to-r from-emerald-50/50 to-teal-50/50 rounded-2xl p-5 text-left flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                    <div className="space-y-1">
+                      <span className="text-[9px] font-bold text-emerald-700 uppercase tracking-wider block">GỢI Ý DÀNH CHO BẠN</span>
+                      <h4 className="font-bold text-xs md:text-sm text-zinc-900 leading-snug">Nhận miễn phí cẩm nang Routine mụn và voucher Shopee 50k!</h4>
+                    </div>
+                    <Link href={buildFilterUrl()} className="inline-block text-center px-5 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white text-[10px] font-bold rounded-full transition shrink-0 cursor-pointer">
+                      Khám phá sản phẩm phù hợp →
+                    </Link>
+                  </div>
+                );
+              }
+
+              // US-004: Tự động chèn khối gợi ý IngredientCTABlock sau đoạn văn thứ 4 (hoặc index 3)
+              if (i === 3 && blog.tags_ingredients && blog.tags_ingredients.length > 0) {
                 elements.push(
                   <IngredientCTABlock 
                     key={`cta-${i}`}
@@ -132,24 +147,26 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
               <span className="text-[10px] font-bold text-amber-600 uppercase tracking-wider block">
                 Gợi ý dành cho bạn
               </span>
-              <div className="space-y-3">
-                {relatedProducts.slice(0, 3).map((product) => (
-                  <div key={product.id} className="flex gap-3 items-center p-3 bg-zinc-50/50 border border-zinc-150 rounded-xl">
-                    <div className="w-12 h-12 bg-white rounded-lg overflow-hidden flex-shrink-0 flex items-center justify-center border border-zinc-150">
-                      <Image src={product.image} alt={product.name} width={40} height={40} className="object-contain mix-blend-multiply" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <span className="text-[9px] uppercase font-bold text-zinc-400 block">{product.brand}</span>
-                      <h4 className="text-xs font-bold text-zinc-900 truncate leading-snug">{product.name}</h4>
-                      <span className="text-xs font-extrabold text-orange-600 block mt-0.5">{product.price || "Liên hệ"}</span>
+              <div className="flex gap-3 overflow-x-auto scrollbar-none pb-3 -mx-6 px-6">
+                {relatedProducts.slice(0, 5).map((product) => (
+                  <div key={product.id} className="flex flex-col justify-between w-[200px] shrink-0 p-3 bg-zinc-50/50 border border-zinc-150 rounded-xl gap-3">
+                    <div className="flex gap-2.5 items-center">
+                      <div className="w-10 h-10 bg-white rounded-lg overflow-hidden flex-shrink-0 flex items-center justify-center border border-zinc-150">
+                        <Image src={product.image} alt={product.name} width={35} height={35} className="object-contain mix-blend-multiply" />
+                      </div>
+                      <div className="min-w-0">
+                        <span className="text-[8px] uppercase font-bold text-zinc-400 block">{product.brand}</span>
+                        <h4 className="text-[10px] font-bold text-zinc-900 truncate leading-snug">{product.name}</h4>
+                        <span className="text-[10px] font-extrabold text-orange-600 block mt-0.5">{product.price || "Liên hệ"}</span>
+                      </div>
                     </div>
                     <ShopeeButton 
                       url={product.shopeeUrl} 
-                      text="Mua" 
+                      text="Săn Deal Shopee" 
                       productId={product.id}
                       productName={product.name}
                       subId={`blog_mobile_${blog.slug}`}
-                      className="h-8 px-4 text-xs rounded-full font-bold" 
+                      className="h-8 w-full text-[10px] rounded-full font-bold" 
                     />
                   </div>
                 ))}
@@ -165,11 +182,11 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
         </article>
 
         {/* Cột phải: Sidebar AdSense + Gợi ý Shopee */}
-        <aside className="md:w-[35%] space-y-6">
+        <aside className="hidden md:block md:w-[35%] space-y-6">
           <div className="sticky top-24 space-y-6">
             
             {/* Box AdSense / Affiliate Placeholder */}
-            {FEATURE_FLAGS.ENABLE_ADSENSE ? (
+            {FEATURE_FLAGS.ENABLE_ADSENSE && (
               <div className="ad-container ad-sidebar min-h-[250px] w-full flex items-center justify-center border border-zinc-250 rounded-xl bg-zinc-50 p-4">
                 <ins className="adsbygoogle"
                      style={{ display: "block" }}
@@ -177,19 +194,11 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
                      data-ad-slot="xxx"
                      data-ad-format="rectangle"></ins>
               </div>
-            ) : (
-              <div className="overflow-hidden border border-zinc-150 bg-gradient-to-br from-emerald-50 to-teal-50 rounded-xl p-5 text-left space-y-4">
-                <span className="text-[9px] font-bold text-emerald-700 uppercase tracking-wider block">QUÀ TẶNG THÀNH VIÊN</span>
-                <h4 className="font-bold text-xs text-zinc-900 leading-snug">Nhận miễn phí cẩm nang Routine mụn và voucher Shopee 50k!</h4>
-                <Link href={buildFilterUrl()} className="block text-center py-2 bg-emerald-500 hover:bg-emerald-600 text-white text-[10px] font-bold rounded-full transition">
-                  Khám phá ngay →
-                </Link>
-              </div>
             )}
 
             {/* Hộp sản phẩm liên quan (Desktop Only) */}
             {relatedProducts.length > 0 && (
-              <Card className="hidden md:block border border-zinc-150 bg-zinc-50/50 shadow-none text-left rounded-xl">
+              <Card className="border border-zinc-150 bg-zinc-50/50 shadow-none text-left rounded-xl">
                 <CardContent className="p-5 space-y-4">
                   <div className="flex items-center justify-between text-zinc-900 font-bold text-xs uppercase tracking-wider border-b border-zinc-150 pb-2">
                     <div className="flex items-center gap-1.5">
@@ -214,6 +223,7 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
                           <span className="text-[9px] font-bold text-zinc-400 uppercase tracking-wide">Được tài trợ</span>
                           <ShopeeButton 
                             url={product.shopeeUrl} 
+                            text="Săn Deal Shopee"
                             productId={product.id}
                             productName={product.name}
                             subId={`blog_sidebar_${blog.slug}`}
@@ -225,7 +235,7 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
                   </div>
                   <Link
                     href={buildFilterUrl()}
-                    className="block text-center text-xs text-emerald-700 font-bold hover:underline pt-2 border-t border-zinc-150"
+                    className="block text-center text-xs text-emerald-700 font-bold hover:underline pt-2 border-t border-zinc-150 cursor-pointer"
                   >
                     Xem tất cả sản phẩm →
                   </Link>
