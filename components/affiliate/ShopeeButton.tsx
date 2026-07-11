@@ -44,7 +44,7 @@ export default function ShopeeButton({
       target="_blank"
       rel="nofollow noopener sponsored"
       onClick={handleClick}
-      className={`bg-[#EE4D2D] hover:bg-[#d73f21] text-white font-semibold rounded-full hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 shadow-sm cursor-pointer overflow-hidden ${className}`}
+      className={`bg-primary hover:bg-emerald-600 text-white font-semibold rounded-full hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 shadow-sm cursor-pointer overflow-hidden ${className}`}
     >
       <div className="flex items-center justify-center gap-2 w-full h-full min-h-[inherit] py-2.5 px-5">
         <ShoppingCart className="w-3.5 h-3.5 shrink-0" />

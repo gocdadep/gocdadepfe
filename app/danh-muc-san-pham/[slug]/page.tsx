@@ -81,6 +81,13 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
   if (hasParaben) {
     warnings.push("Phát hiện thành phần Paraben: Chất bảo quản nhóm Paraben, có thể gây quá mẫn đối với da đặc biệt nhạy cảm.");
   }
+  
+  const isSupplement = product.brand.toLowerCase() === "dhc" || 
+                       product.name.toLowerCase().includes("viên uống") || 
+                       product.name.toLowerCase().includes("thực phẩm chức năng");
+  if (isSupplement) {
+    warnings.push("Chú ý: Sản phẩm này không phải là thuốc và không có tác dụng thay thế thuốc chữa bệnh.");
+  }
 
   const getSafetyStyle = (level: string) => {
     switch (level) {
