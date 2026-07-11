@@ -14,6 +14,43 @@ function sanitizeCtaLabel(label?: string): string {
   return label;
 }
 
+const SOURCE_TAGS_BLACKLIST = ["tiki", "shopee", "lazada", "beautybox", "bestme", "con cưng", "the face shop"];
+const PLATFORM_PHRASES = ["trên tiki.vn", "tại tiki.vn", "trên shopee", "tại shopee", "tiki trading", "shopee mall"];
+
+function sanitizeTags(tags?: string[]): string[] {
+  if (!tags) return [];
+  return tags.filter(tag => !SOURCE_TAGS_BLACKLIST.includes(tag.toLowerCase()));
+}
+
+function sanitizeDescription(desc?: string): string {
+  if (!desc) return "Sản phẩm chính hãng.";
+  let clean = desc;
+  for (const phrase of PLATFORM_PHRASES) {
+    clean = clean.replace(new RegExp(phrase, "gi"), "");
+  }
+  // Loại bỏ các khoảng trắng thừa ở cuối/đầu sau khi replace
+  clean = clean.replace(/\s+/g, ' ').trim();
+  // Nếu chỉ còn dấu chấm hoặc trống thì fallback
+  if (clean === "." || !clean) return "Sản phẩm chính hãng.";
+  return clean;
+}
+
+function stripTrackingParams(url: string): string {
+  if (!url) return "";
+  try {
+    const parsed = new URL(url);
+    const TRACKING_PARAMS = [
+      "utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term",
+      "tclid", "clickId", "trackId", "fsl", "deepLink", "deepLinkData", 
+      "isOpenStore", "osName", "fullUrl", "isFBApp", "hash", "sub4"
+    ];
+    TRACKING_PARAMS.forEach(p => parsed.searchParams.delete(p));
+    return parsed.toString();
+  } catch {
+    return url;
+  }
+}
+
 export const productsData: Product[] = rawProducts.map((p) => {
   const source = validSources.includes(p.source as ValidSource) ? p.source : "tiki";
   
@@ -60,6 +97,8 @@ export const productsData: Product[] = rawProducts.map((p) => {
     }
   }
 
+  const cleanUrl = stripTrackingParams(p.rawProductUrl);
+
   return {
     id: p.id,
     name: p.name,
@@ -68,8 +107,8 @@ export const productsData: Product[] = rawProducts.map((p) => {
     skin_types,
     concerns,
     ingredientIds,
-    shopeeUrl: p.rawProductUrl,
-    rawProductUrl: p.rawProductUrl,
+    shopeeUrl: cleanUrl,
+    rawProductUrl: cleanUrl,
     source,
     image: p.image || "/images/product-placeholder.webp",
     slug: p.slug,
@@ -77,8 +116,8 @@ export const productsData: Product[] = rawProducts.map((p) => {
     rating: 5,
     reviewCount: 100,
     safetyScore: 90,
-    description: p.description || "Sản phẩm chính hãng.",
-    tags: p.tags || [],
+    description: sanitizeDescription(p.description),
+    tags: sanitizeTags(p.tags),
     ctaLabel: sanitizeCtaLabel(p.ctaLabel),
   } as Product;
 });
