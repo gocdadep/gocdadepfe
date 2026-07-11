@@ -21,18 +21,10 @@ export default function Header({ isStatic = false }: HeaderProps) {
   const prevPathname = useRef(pathname);
 
   useEffect(() => {
-    // Xác định xem đây có phải là chuyển đổi giữa các bài viết chi tiết tin tức (Related Articles click)
-    const isRelatedArticleClick =
-      prevPathname.current.startsWith("/tin-tuc/") &&
-      prevPathname.current !== "/tin-tuc" &&
-      pathname.startsWith("/tin-tuc/") &&
-      pathname !== "/tin-tuc" &&
-      prevPathname.current !== pathname;
-
     const handleScrollToTop = () => {
       window.scrollTo({
         top: 0,
-        behavior: isRelatedArticleClick ? "smooth" : "instant",
+        behavior: "instant",
       });
     };
 

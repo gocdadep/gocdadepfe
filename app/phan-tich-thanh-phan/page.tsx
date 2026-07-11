@@ -14,11 +14,14 @@ export default function AnalyzerPage() {
       <Header />
       <main className="max-w-4xl mx-auto px-6 py-12 flex-1 w-full space-y-8 text-center">
         <div className="space-y-4">
-          <h1 className="text-3xl font-extrabold text-slate-950 dark:text-white">
+          <h1 className="text-3xl font-extrabold text-slate-950">
             Phân tích bảng thành phần mỹ phẩm
           </h1>
           <p className="text-sm text-text-secondary max-w-lg mx-auto">
             Dán danh sách hoạt chất ngăn cách bằng dấu phẩy để kiểm tra nhanh mức độ an toàn.
+          </p>
+          <p className="text-xs text-zinc-400 mt-2">
+            ⚕️ Kết quả phân tích chỉ mang tính tham khảo. Tham khảo ý kiến bác sĩ da liễu trước khi sử dụng.
           </p>
         </div>
         <IngredientAnalyzer />

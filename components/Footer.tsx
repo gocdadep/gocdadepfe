@@ -35,7 +35,10 @@ export default function Footer() {
           </div>
         </div>
         <Separator className="my-8" />
-        <div className="text-center">
+        <div className="text-center space-y-2">
+          <p className="text-[10px] text-zinc-400 leading-relaxed max-w-2xl mx-auto">
+            ⚕️ Thông tin trên Góc Da Đẹp chỉ mang tính chất tham khảo bách khoa. Không thay thế chỉ định, phác đồ điều trị của bác sĩ da liễu có chuyên môn.
+          </p>
           <p className="text-[10px] text-zinc-400 font-semibold uppercase tracking-wider">
             © 2026 gocdadep.com. Tất cả các quyền được bảo lưu.
           </p>

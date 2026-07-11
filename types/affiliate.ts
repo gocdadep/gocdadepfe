@@ -1,4 +1,4 @@
-export type AffiliateCategory = "study" | "dorm" | "collection";
+export type AffiliateCategory = "study" | "dorm" | "collection" | "serum" | "sunscreen" | "toner" | "retinol" | "moisturizer" | "cleanser" | "acme";
 
 export interface AffiliateProduct {
   id: string;
@@ -7,6 +7,7 @@ export interface AffiliateProduct {
   description: string;
   imagePath: string;
   category: AffiliateCategory;
+  shopeeUrl: string;
   tags?: string[];
   ctaLabel?: string;
 }

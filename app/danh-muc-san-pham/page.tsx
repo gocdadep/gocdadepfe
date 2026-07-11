@@ -14,11 +14,13 @@ export default function ProductsPage() {
       <Header />
       <main className="max-w-5xl mx-auto px-6 py-12 flex-1 w-full space-y-8 text-center">
         <div className="space-y-4">
-          <h1 className="text-3xl font-extrabold text-slate-950 dark:text-white">
-            Tra cứu & Lọc sản phẩm
+          <h1 className="text-4xl font-extrabold text-emerald-900">
+            Danh Mục Sản Phẩm
           </h1>
-          <p className="text-sm text-text-secondary max-w-lg mx-auto">
-            Lọc sản phẩm chứa chất bạn thích hoặc tránh chất bạn dị ứng dễ dàng.
+          <p className="text-sm text-zinc-500 max-w-2xl mx-auto leading-relaxed">
+            Tuyển tập những sản phẩm skincare được phân tích khoa học, minh bạch về thành phần.
+            <br />
+            Lựa chọn giải pháp tối ưu cho làn da của bạn.
           </p>
         </div>
         <ProductFilter />

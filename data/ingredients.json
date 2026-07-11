@@ -26,7 +26,47 @@
     "safetyLevel": "DANGER",
     "functions": ["preservative"],
     "skinTypes": ["all"],
-    "warnings": "Chất bảo quan nhóm Paraben, có thể gây dị ứng cho da quá nhạy cảm.",
+    "warnings": "Chất bảo quản nhóm Paraben, có thể gây dị ứng cho da quá nhạy cảm.",
     "description": "Chất bảo quản kháng nấm và vi khuẩn phổ biến trong mỹ phẩm."
+  },
+  {
+    "id": "retinol",
+    "name": "Retinol",
+    "aliases": ["Vitamin A"],
+    "safetyLevel": "SAFE",
+    "functions": ["anti-aging", "cell-communicating"],
+    "skinTypes": ["all"],
+    "warnings": "Có thể gây đỏ, khô bong tróc da khi mới bắt đầu sử dụng. Nên dùng nồng độ thấp và dưỡng ẩm tốt.",
+    "description": "Dẫn xuất Vitamin A giúp tăng sinh collagen, đẩy nhanh chu kỳ tế bào và cải thiện nếp nhăn."
+  },
+  {
+    "id": "vitamin-c",
+    "name": "Vitamin C",
+    "aliases": ["Ascorbic Acid", "L-Ascorbic Acid"],
+    "safetyLevel": "SAFE",
+    "functions": ["antioxidant", "brightening"],
+    "skinTypes": ["all"],
+    "warnings": "Dễ bị oxy hóa khi tiếp xúc với ánh sáng và không khí. Dùng ban ngày cần kết hợp kem chống nắng.",
+    "description": "Hoạt chất chống oxy hóa mạnh mẽ giúp mờ thâm mụn, làm sáng da đều màu và bảo vệ da trước tia UV."
+  },
+  {
+    "id": "salicylic-acid",
+    "name": "Salicylic Acid (BHA)",
+    "aliases": ["BHA"],
+    "safetyLevel": "SAFE",
+    "functions": ["exfoliating", "soothing"],
+    "skinTypes": ["oily", "acne-prone"],
+    "warnings": "Có thể gây khô da nếu lạm dụng. Không dùng cho người dị ứng với aspirin.",
+    "description": "Axit gốc dầu có khả năng thâm nhập sâu vào lỗ chân lông để làm sạch bã nhờn, tẩy tế bào chết và trị mụn."
+  },
+  {
+    "id": "hyaluronic-acid",
+    "name": "Hyaluronic Acid (HA)",
+    "aliases": ["HA", "Sodium Hyaluronate"],
+    "safetyLevel": "SAFE",
+    "functions": ["moisturizing"],
+    "skinTypes": ["all"],
+    "warnings": null,
+    "description": "Chất giữ ẩm siêu việt có khả năng ngậm nước gấp 1000 lần trọng lượng của chính nó, giúp da căng mọng."
   }
 ]

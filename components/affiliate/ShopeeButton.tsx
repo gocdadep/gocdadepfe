@@ -23,11 +23,14 @@ export default function ShopeeButton({
     <Link
       data-testid="btn-shopee-affiliate"
       href={redirectUrl}
-      rel="sponsored nofollow"
-      className={`inline-flex items-center justify-center gap-1.5 bg-[#EE4D2D] hover:bg-[#d73f21] text-white font-semibold rounded-lg transition duration-200 shadow-sm cursor-pointer ${className}`}
+      target="_blank"
+      rel="nofollow noopener sponsored"
+      className={`bg-[#EE4D2D] hover:bg-[#d73f21] text-white font-semibold rounded-lg transition duration-200 shadow-sm cursor-pointer overflow-hidden ${className}`}
     >
-      <ShoppingCart className="w-3.5 h-3.5 shrink-0" />
-      <span>{text}</span>
+      <div className="flex items-center justify-center gap-1.5 w-full h-full min-h-[inherit] py-2 px-4">
+        <ShoppingCart className="w-3.5 h-3.5 shrink-0" />
+        <span>{text}</span>
+      </div>
     </Link>
   );
 }
