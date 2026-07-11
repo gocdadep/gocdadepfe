@@ -28,7 +28,7 @@ export default function LandingPortalPage() {
           </p>
           <div className="pt-4">
             <Link
-              href="/analyzer"
+              href="/phan-tich-thanh-phan"
               className="inline-flex items-center gap-2 px-8 py-3.5 bg-accent hover:bg-green-700 text-white font-bold rounded-2xl shadow-md transition duration-200 hover:scale-[1.02]"
             >
               Phân tích bảng thành phần ngay
@@ -46,13 +46,13 @@ export default function LandingPortalPage() {
             <div className="bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-2xl p-6 shadow-sm hover:shadow-md hover:border-accent/20 dark:hover:border-accent/20 transition duration-300 flex flex-col justify-between text-left space-y-4">
               <div className="space-y-2">
                 <Newspaper className="w-8 h-8 text-accent shrink-0" />
-                <h3 className="text-lg font-bold text-slate-950 dark:text-white">Cẩm nang & Blog Skincare</h3>
+                 <h3 className="text-lg font-bold text-slate-950 dark:text-white">Cẩm nang & Blog Skincare</h3>
                 <p className="text-slate-500 dark:text-zinc-400 text-xs leading-relaxed">
                   Các bài viết phân tích hoạt chất, chia sẻ routine chuẩn khoa học và cẩm nang chăm sóc da hữu ích.
                 </p>
               </div>
               <Link
-                href="/blog"
+                href="/cam-nang"
                 className="w-full text-center py-2.5 bg-slate-900 dark:bg-zinc-850 hover:bg-slate-800 text-white text-xs font-bold rounded-xl transition"
               >
                 Đọc cẩm nang &rarr;
@@ -69,7 +69,7 @@ export default function LandingPortalPage() {
                 </p>
               </div>
               <Link
-                href="/analyzer"
+                href="/phan-tich-thanh-phan"
                 className="w-full text-center py-2.5 bg-accent hover:bg-green-700 text-white text-xs font-bold rounded-xl shadow-sm transition"
               >
                 Phân tích ngay &rarr;
@@ -86,7 +86,7 @@ export default function LandingPortalPage() {
                 </p>
               </div>
               <Link
-                href="/products"
+                href="/danh-muc-san-pham"
                 className="w-full text-center py-2.5 bg-slate-900 dark:bg-zinc-850 hover:bg-slate-800 text-white text-xs font-bold rounded-xl transition"
               >
                 Tra cứu ngay &rarr;

@@ -15,6 +15,31 @@ const nextConfig: NextConfig = {
   async redirects() {
     const defaultRedirects = [
       {
+        source: "/analyzer",
+        destination: "/phan-tich-thanh-phan",
+        permanent: true,
+      },
+      {
+        source: "/products",
+        destination: "/danh-muc-san-pham",
+        permanent: true,
+      },
+      {
+        source: "/products/:slug",
+        destination: "/danh-muc-san-pham/:slug",
+        permanent: true,
+      },
+      {
+        source: "/blog",
+        destination: "/cam-nang",
+        permanent: true,
+      },
+      {
+        source: "/blog/:slug*",
+        destination: "/cam-nang/:slug*",
+        permanent: true,
+      },
+      {
         source: "/dashboard",
         destination: "/",
         permanent: false,

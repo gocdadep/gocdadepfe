@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import ingredientsData from "@/data/ingredients.json";
+import IngredientDetailModal from "@/components/feature/IngredientDetailModal";
 
 interface MappedIngredient {
   id: string;
@@ -20,6 +21,10 @@ export default function IngredientAnalyzer() {
     dangerPercent: 0,
   });
   const [warnings, setWarnings] = useState<string[]>([]);
+  
+  // States cho modal hoạt chất chi tiết
+  const [selectedIngredient, setSelectedIngredient] = useState<MappedIngredient | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     if (!rawText.trim()) {
@@ -105,6 +110,11 @@ export default function IngredientAnalyzer() {
   const displayedWarnings = rawText.trim() ? warnings : [];
   const displayedStats = rawText.trim() ? stats : { totalNhanDien: 0, safePercent: 0, cautionPercent: 0, dangerPercent: 0 };
 
+  const handleIngredientClick = (ing: MappedIngredient) => {
+    setSelectedIngredient(ing);
+    setIsModalOpen(true);
+  };
+
   return (
     <div className="w-full max-w-3xl mx-auto space-y-8 text-left">
       {/* Input Textarea */}
@@ -153,28 +163,41 @@ export default function IngredientAnalyzer() {
 
           {/* Mapped list details */}
           <div className="space-y-3">
-            <h3 className="text-sm font-bold text-slate-950 dark:text-white">Chi tiết thành phần:</h3>
-            {displayedMappedList.map((ing, index) => {
-              let badgeClass = "bg-gray-100 text-gray-500";
-              if (ing.safetyLevel === "SAFE") badgeClass = "bg-[#E8F5E9] text-[#2E7D32]";
-              else if (ing.safetyLevel === "CAUTION") badgeClass = "bg-[#FFFDE7] text-[#F57F17]";
-              else if (ing.safetyLevel === "DANGER") badgeClass = "bg-[#FFEBEE] text-[#C62828]";
+            <h3 className="text-sm font-bold text-slate-950 dark:text-white">Chi tiết thành phần (Bấm để xem thêm):</h3>
+            <div className="grid grid-cols-1 gap-3">
+              {displayedMappedList.map((ing, index) => {
+                let badgeClass = "bg-gray-100 text-gray-500";
+                if (ing.safetyLevel === "SAFE") badgeClass = "bg-[#E8F5E9] text-[#2E7D32]";
+                else if (ing.safetyLevel === "CAUTION") badgeClass = "bg-[#FFFDE7] text-[#F57F17]";
+                else if (ing.safetyLevel === "DANGER") badgeClass = "bg-[#FFEBEE] text-[#C62828]";
 
-              return (
-                <div key={index} className="p-4 bg-card border border-card-border rounded-xl flex flex-col sm:flex-row sm:items-start justify-between gap-4">
-                  <div className="space-y-1">
-                    <h4 className="font-semibold text-sm text-foreground">{ing.name}</h4>
-                    <p className="text-xs text-text-secondary">{ing.description}</p>
-                  </div>
-                  <span className={`text-xs font-bold px-2.5 py-1 rounded-full shrink-0 self-start sm:self-center capitalize ${badgeClass}`}>
-                    {ing.safetyLevel.toLowerCase()}
-                  </span>
-                </div>
-              );
-            })}
+                return (
+                  <button
+                    key={index}
+                    onClick={() => handleIngredientClick(ing)}
+                    className="p-4 bg-card border border-card-border rounded-xl flex flex-col sm:flex-row sm:items-start justify-between gap-4 w-full text-left hover:border-accent hover:shadow-sm transition-all cursor-pointer"
+                  >
+                    <div className="space-y-1">
+                      <h4 className="font-semibold text-sm text-foreground">{ing.name}</h4>
+                      <p className="text-xs text-text-secondary line-clamp-1">{ing.description}</p>
+                    </div>
+                    <span className={`text-xs font-bold px-2.5 py-1 rounded-full shrink-0 self-start sm:self-center capitalize ${badgeClass}`}>
+                      {ing.safetyLevel.toLowerCase()}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
           </div>
         </div>
       )}
+
+      {/* Modal chi tiết hoạt chất */}
+      <IngredientDetailModal
+        isOpen={isModalOpen}
+        onOpenChange={setIsModalOpen}
+        ingredient={selectedIngredient}
+      />
     </div>
   );
 }

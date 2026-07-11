@@ -127,13 +127,13 @@ export default function Header({ isStatic = false }: HeaderProps) {
               <span>Góc Da Đẹp</span>
             </Link>
             <div className="hidden md:flex gap-6">
-              <Link href="/analyzer" className={getLinkClass("/analyzer")} data-testid="link-analyzer">
+              <Link href="/phan-tich-thanh-phan" className={getLinkClass("/phan-tich-thanh-phan")} data-testid="link-analyzer">
                 Phân tích bảng chất
               </Link>
-              <Link href="/products" className={getLinkClass("/products")} data-testid="link-products">
+              <Link href="/danh-muc-san-pham" className={getLinkClass("/danh-muc-san-pham")} data-testid="link-products">
                 Tra cứu sản phẩm
               </Link>
-              <Link href="/blog" className={getLinkClass("/blog")} data-testid="link-blog">
+              <Link href="/cam-nang" className={getLinkClass("/cam-nang")} data-testid="link-blog">
                 Cẩm nang
               </Link>
             </div>
