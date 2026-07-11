@@ -1,6 +1,7 @@
 import Image from "next/image";
 import type { AffiliateProduct } from "@/types/affiliate";
 import productsData from "@/data/shopee-affiliate-products.json";
+import ShopeeButton from "./ShopeeButton";
 
 export default function AffiliateBox() {
   let product: AffiliateProduct | null = null;
@@ -16,7 +17,7 @@ export default function AffiliateBox() {
 
   return (
     <div
-      className="w-full bg-amber-50/60 border border-amber-200/50 rounded-2xl p-4 flex items-center gap-4 mb-6"
+      className="w-full bg-amber-50/60 border border-amber-200/50 rounded-2xl p-4 flex items-center gap-4 mb-6 shadow-sm hover:shadow-md transition duration-200"
       data-testid="affiliate-box-study"
     >
       <div className="flex-shrink-0 relative">
@@ -25,7 +26,7 @@ export default function AffiliateBox() {
           alt={product.title}
           width={80}
           height={80}
-          className="rounded-xl object-cover"
+          className="rounded-xl object-cover bg-white"
         />
       </div>
       <div className="flex-1 min-w-0">
@@ -35,19 +36,18 @@ export default function AffiliateBox() {
         <p className="font-bold text-sm text-slate-900 leading-snug truncate">
           {product.title}
         </p>
-        <p className="text-xs text-slate-500 mt-0.5 line-clamp-2">
+        <p className="text-xs text-slate-505 mt-0.5 line-clamp-2">
           {product.description}
         </p>
       </div>
-      <a
-        href={`/redirect?url=${encodeURIComponent(product.shopeeUrl)}`}
-        target="_blank"
-        rel="nofollow noopener sponsored"
-        className="flex-shrink-0 px-3 py-2 bg-orange-600 hover:bg-orange-700 text-white text-xs font-bold rounded-xl transition duration-200 whitespace-nowrap"
-        data-testid="affiliate-box-cta"
-      >
-        Xem trên Shopee
-      </a>
+      <ShopeeButton 
+        url={product.shopeeUrl} 
+        text="Xem" 
+        productId={product.id}
+        productName={product.title}
+        subId="affiliate_box"
+        className="flex-shrink-0 text-xs rounded-full font-bold px-4 h-9"
+      />
     </div>
   );
 }

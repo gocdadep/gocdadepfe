@@ -1,6 +1,7 @@
 import Image from "next/image";
 import type { AffiliateProduct } from "@/types/affiliate";
 import productsData from "@/data/shopee-affiliate-products.json";
+import ShopeeButton from "./ShopeeButton";
 
 interface Props {
   currentPage?: number;
@@ -12,11 +13,9 @@ export default function AffiliateSidebarWidget({ currentPage, seed }: Props) {
   try {
     const products = productsData as AffiliateProduct[];
     if (currentPage && currentPage > 0) {
-      // Chọn sản phẩm modulo theo trang
       const index = (currentPage - 1) % products.length;
       product = products[index] ?? null;
     } else if (seed) {
-      // Hash seed (slug) để hiển thị sản phẩm cố định cho bài viết cụ thể
       let hash = 0;
       for (let i = 0; i < seed.length; i++) {
         hash = seed.charCodeAt(i) + ((hash << 5) - hash);
@@ -35,7 +34,7 @@ export default function AffiliateSidebarWidget({ currentPage, seed }: Props) {
 
   return (
     <div
-      className="w-full bg-white border border-slate-200 rounded-2xl p-4 flex flex-col items-center text-center space-y-4 shadow-sm"
+      className="w-full bg-white border border-zinc-150 rounded-2xl p-4 flex flex-col items-center text-center space-y-4 shadow-sm hover:shadow-md hover:scale-[1.01] transition duration-200"
       data-testid="affiliate-sidebar-widget"
     >
       <div className="w-full text-left">
@@ -58,19 +57,19 @@ export default function AffiliateSidebarWidget({ currentPage, seed }: Props) {
         <h4 className="font-bold text-sm text-slate-900 leading-snug">
           {product.title}
         </h4>
-        <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed">
+        <p className="text-xs text-slate-550 line-clamp-2 leading-relaxed">
           {product.description}
         </p>
       </div>
 
-      <a
-        href={`/redirect?url=${encodeURIComponent(product.shopeeUrl)}`}
-        target="_blank"
-        rel="nofollow noopener sponsored"
-        className="w-full py-2.5 bg-orange-600 hover:bg-orange-700 text-white text-xs font-bold rounded-xl transition duration-200 text-center block"
-      >
-        {product.ctaLabel || "Xem trên Shopee"}
-      </a>
+      <ShopeeButton 
+        url={product.shopeeUrl} 
+        text={product.ctaLabel || "Xem trên Shopee"}
+        productId={product.id}
+        productName={product.title}
+        subId={`sidebar_${seed || "generic"}`}
+        className="w-full text-xs rounded-full font-bold h-9"
+      />
     </div>
   );
 }

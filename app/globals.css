@@ -20,9 +20,7 @@ html {
   --popover: #ffffff;
   --popover-foreground: #09090b;
   
-  --primary: #18181b;
-  --primary-foreground: #fafafa;
-  --primary-container: #27272a;
+
   
   --secondary: #f4f4f5;
   --secondary-foreground: #18181b;
@@ -38,11 +36,20 @@ html {
   
   --border: #e4e4e7;
   --input: #e4e4e7;
-  --ring: #18181b;
+  --ring: #10b981;
   
-  --radius: 0.5rem;
+  --radius: 0.75rem;
 
   --shopee: #EE4D2D;
+  --shopee-hover: #d73f21;
+  --shopee-light: #fff1ef;
+  --rating-star: #f59e0b;
+
+  --primary: #10b981;
+  --primary-foreground: #ffffff;
+  --primary-container: #ecfdf5;
+  --primary-dark: #047857;
+  --primary-light: #2dd4bf;
 
   /* Safety level tokens */
   --safe-bg: #f0fdf4;

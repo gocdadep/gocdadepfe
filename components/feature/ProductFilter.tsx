@@ -2,88 +2,114 @@
 
 import { useState, useMemo, Suspense } from "react";
 import Image from "next/image";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import productsData from "@/data/products.json";
 import ingredientsData from "@/data/ingredients.json";
 import ShopeeButton from "@/components/affiliate/ShopeeButton";
-import { Filter, RotateCcw, Search, ShoppingBag } from "lucide-react";
+import { Filter, RotateCcw, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { Drawer, DrawerContent, DrawerTrigger, DrawerTitle, DrawerDescription } from "@/components/ui/drawer";
-
-interface Product {
-  id: string;
-  name: string;
-  brand: string;
-  image: string;
-  shopeeUrl: string;
-  ingredientIds: string[];
-  price?: string;
-  description?: string;
-  category?: string;
-}
-
-interface Ingredient {
-  id: string;
-  name: string;
-  safetyLevel: string;
-  description: string;
-  aliases: string[];
-}
+import { Drawer, DrawerTrigger, DrawerContent, DrawerTitle, DrawerDescription } from "@/components/ui/drawer";
+import type { Product } from "@/types/product";
+import { SKIN_TYPES, CONCERNS } from "@/types/product";
 
 function ProductFilterContent() {
   const searchParams = useSearchParams();
+  const router = useRouter();
+
   const initialSearch = searchParams.get("search") || "";
+  const initialSkinType = searchParams.get("skin_type") || "all";
+  const initialConcern = searchParams.get("concern") || "";
+  const initialIngredient = searchParams.get("ingredient") || "";
 
   const [searchQuery, setSearchQuery] = useState(initialSearch);
-  const [includes, setIncludes] = useState<string[]>([]);
+  const [selectedSkinType, setSelectedSkinType] = useState(initialSkinType);
+  const [selectedConcern, setSelectedConcern] = useState(initialConcern);
+  const [selectedCategory, setSelectedCategory] = useState("all");
+
+  const [includes, setIncludes] = useState<string[]>(initialIngredient ? [initialIngredient] : []);
   const [excludes, setExcludes] = useState<string[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+
+  // Đồng bộ params từ URL bằng cách để key quản lý việc mount/unmount tự nhiên của Component con phía dưới
 
   // Nạp từ điển hoạt chất
   const ingredientsDict = useMemo(() => {
-    const dict: Record<string, Ingredient> = {};
-    (ingredientsData as Ingredient[]).forEach((ing) => {
+    const dict: Record<string, { id: string; name: string; safetyLevel: string }> = {};
+    ingredientsData.forEach((ing) => {
       dict[ing.id] = ing;
     });
     return dict;
   }, []);
 
+  // Sync state lên URL query parameters
+  const updateUrlParams = (updates: Record<string, string>) => {
+    const params = new URLSearchParams(window.location.search);
+    Object.entries(updates).forEach(([key, value]) => {
+      if (!value || value === "all") {
+        params.delete(key);
+      } else {
+        params.set(key, value);
+      }
+    });
+    router.replace(`?${params.toString()}`, { scroll: false });
+  };
+
   // Logic Lọc dữ liệu
-  const filteredProducts = (productsData as Product[]).filter((product) => {
-    // Lọc theo category tab
-    const matchesCategory =
-      selectedCategory === "all" || product.category === selectedCategory;
+  const filteredProducts = useMemo(() => {
+    return (productsData as Product[]).filter((product) => {
+      // 1. Lọc theo category tab
+      if (selectedCategory !== "all" && product.category !== selectedCategory) {
+        return false;
+      }
 
-    // Lọc theo từ khóa tìm kiếm
-    const lowerQuery = searchQuery.toLowerCase();
-    const matchesSearch =
-      searchQuery.trim() === "" ||
-      product.name.toLowerCase().includes(lowerQuery) ||
-      product.brand.toLowerCase().includes(lowerQuery);
+      // 2. Lọc theo skin_type
+      if (selectedSkinType !== "all" && !(product.skin_types || []).includes(selectedSkinType)) {
+        return false;
+      }
 
-    // Lọc theo yêu cầu hoạt chất
-    const matchesIncludes = includes.every((id) =>
-      product.ingredientIds.includes(id)
-    );
+      // 3. Lọc theo concern
+      if (selectedConcern !== "" && !(product.concerns || []).includes(selectedConcern)) {
+        return false;
+      }
 
-    // Lọc theo chất loại trừ
-    const matchesExcludes = !excludes.some((id) =>
-      product.ingredientIds.includes(id)
-    );
+      // 4. Lọc theo từ khóa tìm kiếm
+      const lowerQuery = searchQuery.toLowerCase().trim();
+      if (lowerQuery !== "") {
+        const matchesSearch =
+          product.name.toLowerCase().includes(lowerQuery) ||
+          product.brand.toLowerCase().includes(lowerQuery) ||
+          (product.description || "").toLowerCase().includes(lowerQuery);
+        if (!matchesSearch) return false;
+      }
 
-    return matchesCategory && matchesSearch && matchesIncludes && matchesExcludes;
-  });
+      // 5. Lọc theo yêu cầu hoạt chất (INCLUDES)
+      const matchesIncludes = includes.every((id) =>
+        product.ingredientIds.includes(id)
+      );
+      if (!matchesIncludes) return false;
+
+      // 6. Lọc theo chất loại trừ (EXCLUDES)
+      const matchesExcludes = !excludes.some((id) =>
+        product.ingredientIds.includes(id)
+      );
+      if (!matchesExcludes) return false;
+
+      return true;
+    });
+  }, [selectedCategory, selectedSkinType, selectedConcern, searchQuery, includes, excludes]);
 
   const toggleInclude = (id: string) => {
+    let newIncludes;
     if (includes.includes(id)) {
-      setIncludes(includes.filter((item) => item !== id));
+      newIncludes = includes.filter((item) => item !== id);
     } else {
-      setIncludes([...includes, id]);
+      newIncludes = [...includes, id];
       setExcludes(excludes.filter((item) => item !== id));
     }
+    setIncludes(newIncludes);
+    updateUrlParams({ ingredient: newIncludes[0] || "" });
   };
 
   const toggleExclude = (id: string) => {
@@ -99,7 +125,10 @@ function ProductFilterContent() {
     setIncludes([]);
     setExcludes([]);
     setSearchQuery("");
+    setSelectedSkinType("all");
+    setSelectedConcern("");
     setSelectedCategory("all");
+    router.replace(window.location.pathname, { scroll: false });
   };
 
   // Presets lọc nhanh
@@ -119,26 +148,23 @@ function ProductFilterContent() {
         setIncludes(includes.filter(id => id !== "methylparaben"));
       }
     } else if (type === "has-niacinamide") {
-      if (includes.includes("niacinamide")) {
-        setIncludes(includes.filter(id => id !== "niacinamide"));
-      } else {
-        setIncludes([...includes, "niacinamide"]);
-        setExcludes(excludes.filter(id => id !== "niacinamide"));
-      }
+      const active = includes.includes("niacinamide");
+      const next = active ? [] : ["niacinamide"];
+      setIncludes(next);
+      setExcludes(excludes.filter(id => id !== "niacinamide"));
+      updateUrlParams({ ingredient: next[0] || "" });
     } else if (type === "has-retinol") {
-      if (includes.includes("retinol")) {
-        setIncludes(includes.filter(id => id !== "retinol"));
-      } else {
-        setIncludes([...includes, "retinol"]);
-        setExcludes(excludes.filter(id => id !== "retinol"));
-      }
+      const active = includes.includes("retinol");
+      const next = active ? [] : ["retinol"];
+      setIncludes(next);
+      setExcludes(excludes.filter(id => id !== "retinol"));
+      updateUrlParams({ ingredient: next[0] || "" });
     } else if (type === "has-vitamin-c") {
-      if (includes.includes("vitamin-c")) {
-        setIncludes(includes.filter(id => id !== "vitamin-c"));
-      } else {
-        setIncludes([...includes, "vitamin-c"]);
-        setExcludes(excludes.filter(id => id !== "vitamin-c"));
-      }
+      const active = includes.includes("vitamin-c");
+      const next = active ? [] : ["vitamin-c"];
+      setIncludes(next);
+      setExcludes(excludes.filter(id => id !== "vitamin-c"));
+      updateUrlParams({ ingredient: next[0] || "" });
     }
   };
 
@@ -157,7 +183,7 @@ function ProductFilterContent() {
 
     if (hasDanger) {
       return { 
-        label: "CẢN TRỌNG", 
+        label: "CẨN TRỌNG", 
         badgeClass: "bg-red-50 text-red-700 border-red-100 hover:bg-red-50", 
         textColor: "text-red-700", 
         barColor: "bg-red-500",
@@ -196,18 +222,90 @@ function ProductFilterContent() {
       <div className="flex items-center justify-between border-b border-zinc-150 pb-3">
         <div className="flex items-center gap-1.5 text-slate-800 font-semibold text-sm">
           <Filter className="w-4 h-4 text-emerald-850" />
-          <span>Bộ lọc hoạt chất</span>
+          <span>Bộ lọc nâng cao</span>
         </div>
-        {(includes.length > 0 || excludes.length > 0 || searchQuery !== "") && (
+        {(includes.length > 0 || excludes.length > 0 || searchQuery !== "" || selectedSkinType !== "all" || selectedConcern !== "") && (
           <Button
             variant="ghost"
             onClick={resetFilters}
-            className="text-xs h-auto p-0 text-zinc-500 hover:bg-transparent hover:text-emerald-800 hover:underline font-bold flex items-center gap-1 cursor-pointer"
+            className="text-xs h-auto p-0 text-zinc-500 hover:bg-transparent hover:text-emerald-850 hover:underline font-bold flex items-center gap-1 cursor-pointer"
           >
             <RotateCcw className="w-3 h-3" />
             <span>Xóa bộ lọc</span>
           </Button>
         )}
+      </div>
+
+      {/* Lọc theo Loại Da */}
+      <div className="space-y-2">
+        <span className="text-xs font-bold text-slate-700 block">Phù hợp loại da:</span>
+        <div className="flex flex-wrap gap-1.5">
+          <button
+            onClick={() => {
+              setSelectedSkinType("all");
+              updateUrlParams({ skin_type: "all" });
+            }}
+            className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition ${
+              selectedSkinType === "all"
+                ? "bg-emerald-800 border-emerald-800 text-white"
+                : "bg-zinc-50 border-zinc-200 text-slate-800 hover:bg-zinc-100"
+            }`}
+          >
+            Tất cả
+          </button>
+          {SKIN_TYPES.map((st) => (
+            <button
+              key={st.id}
+              onClick={() => {
+                setSelectedSkinType(st.id);
+                updateUrlParams({ skin_type: st.id });
+              }}
+              className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition ${
+                selectedSkinType === st.id
+                  ? "bg-emerald-800 border-emerald-800 text-white"
+                  : "bg-zinc-50 border-zinc-200 text-slate-800 hover:bg-zinc-100"
+              }`}
+            >
+              {st.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Lọc theo Vấn đề Da */}
+      <div className="space-y-2">
+        <span className="text-xs font-bold text-slate-700 block">Vấn đề da:</span>
+        <div className="flex flex-wrap gap-1.5">
+          <button
+            onClick={() => {
+              setSelectedConcern("");
+              updateUrlParams({ concern: "" });
+            }}
+            className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition ${
+              selectedConcern === ""
+                ? "bg-emerald-800 border-emerald-800 text-white"
+                : "bg-zinc-50 border-zinc-200 text-slate-800 hover:bg-zinc-100"
+            }`}
+          >
+            Tất cả
+          </button>
+          {CONCERNS.map((c) => (
+            <button
+              key={c.id}
+              onClick={() => {
+                setSelectedConcern(c.id);
+                updateUrlParams({ concern: c.id });
+              }}
+              className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition ${
+                selectedConcern === c.id
+                  ? "bg-emerald-800 border-emerald-800 text-white"
+                  : "bg-zinc-50 border-zinc-200 text-slate-800 hover:bg-zinc-100"
+              }`}
+            >
+              {c.label}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Yêu Cầu Chứa Hoạt Chất */}
@@ -262,7 +360,10 @@ function ProductFilterContent() {
             className="pl-9 h-10 w-full rounded-xl border border-zinc-200 bg-zinc-50 text-sm placeholder-zinc-400 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-emerald-800 transition-all"
             placeholder="Tìm kiếm mỹ phẩm, thành phần..."
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={(e) => {
+              setSearchQuery(e.target.value);
+              updateUrlParams({ search: e.target.value });
+            }}
           />
         </div>
 
@@ -315,7 +416,10 @@ function ProductFilterContent() {
             className="pl-9 h-9 w-full rounded-lg border border-zinc-150 bg-white text-xs placeholder-zinc-400 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-emerald-800 focus-visible:border-transparent transition-all"
             placeholder="Tìm kiếm sản phẩm, thương hiệu..."
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={(e) => {
+              setSearchQuery(e.target.value);
+              updateUrlParams({ search: e.target.value });
+            }}
           />
         </div>
 
@@ -376,7 +480,7 @@ function ProductFilterContent() {
               [Vitamin C] {includes.includes("vitamin-c") && "✕"}
             </button>
 
-            {(includes.length > 0 || excludes.length > 0 || selectedCategory !== "all") && (
+            {(includes.length > 0 || excludes.length > 0 || selectedCategory !== "all" || selectedSkinType !== "all" || selectedConcern !== "") && (
               <button
                 onClick={resetFilters}
                 className="text-xs font-bold text-zinc-500 hover:text-emerald-800 underline ml-2"
@@ -402,13 +506,13 @@ function ProductFilterContent() {
           </div>
 
           {filteredProducts.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {filteredProducts.map((product) => {
                 const safety = getProductSafety(product.ingredientIds);
                 return (
                   <Card
                     key={product.id}
-                    className="overflow-hidden border border-zinc-100 flex flex-col justify-between shadow-sm hover:shadow-md transition duration-200 rounded-2xl bg-white"
+                    className="overflow-hidden border border-zinc-100 flex flex-col justify-between shadow-sm hover:shadow-md hover:scale-[1.02] transition-all duration-200 rounded-2xl bg-white"
                   >
                     {/* Image Area */}
                     <div className="h-44 md:h-36 bg-zinc-50/50 flex items-center justify-center relative p-3">
@@ -435,7 +539,20 @@ function ProductFilterContent() {
                         <h4 className="font-bold text-xs leading-snug line-clamp-2 h-8 text-slate-800">
                           {product.name}
                         </h4>
-                        <p className="text-[10px] text-zinc-500 line-clamp-1">
+                        
+                        {/* Rating stars hiển thị tĩnh dựa trên data */}
+                        <div className="flex items-center gap-1 mt-0.5">
+                          <span className="flex items-center gap-0.5 text-amber-500">
+                            {[1, 2, 3, 4, 5].map((s) => (
+                              <svg key={s} className={`w-2.5 h-2.5 ${s <= Math.floor(product.rating || 4.5) ? "fill-amber-400 text-amber-400" : "fill-zinc-200 text-zinc-200"}`} viewBox="0 0 20 20">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                              </svg>
+                            ))}
+                          </span>
+                          <span className="text-[9px] text-zinc-400 font-bold">{(product.rating || 4.5).toFixed(1)}</span>
+                        </div>
+
+                        <p className="text-[10px] text-zinc-500 line-clamp-1 mt-1">
                           {product.description}
                         </p>
                       </div>
@@ -462,11 +579,13 @@ function ProductFilterContent() {
                             <span className="text-xs font-extrabold text-orange-600">{product.price || "Liên hệ"}</span>
                             <span className="text-[8px] font-bold text-zinc-350 tracking-wider">TÀI TRỢ</span>
                           </div>
-                          {/* Shopee Button full width on mobile, inline on desktop */}
                           <ShopeeButton 
                             url={product.shopeeUrl} 
                             text="Mua tại Shopee"
-                            className="w-full text-xs rounded-xl font-bold"
+                            productId={product.id}
+                            productName={product.name}
+                            subId="filter_list"
+                            className="w-full text-xs rounded-full font-bold h-9"
                           />
                         </div>
                       </div>
@@ -478,34 +597,8 @@ function ProductFilterContent() {
           ) : (
             <div className="p-12 bg-white border border-zinc-200 rounded-xl text-center text-xs text-zinc-500 shadow-sm">
               Không tìm thấy sản phẩm phù hợp điều kiện lọc. Vui lòng bấm{" "}
-              <Button variant="link" onClick={resetFilters} className="text-emerald-800 font-bold h-auto p-0 cursor-pointer hover:no-underline hover:text-emerald-900">
-                Xóa bộ lọc
-              </Button>{" "}
-              để xem lại danh sách đầy đủ.
-            </div>
-          )}
-
-          {/* Desktop/Mobile pagination */}
-          {filteredProducts.length > 0 && (
-            <div className="flex items-center justify-center gap-1.5 pt-4">
-              <button className="h-8 w-8 rounded-lg border border-zinc-200 flex items-center justify-center text-zinc-500 hover:bg-zinc-50 text-xs font-semibold cursor-pointer">
-                &lt;
-              </button>
-              <button className="h-8 w-8 rounded-lg bg-emerald-800 text-white flex items-center justify-center text-xs font-bold">
-                1
-              </button>
-              <button className="h-8 w-8 rounded-lg border border-zinc-200 flex items-center justify-center text-zinc-500 hover:bg-zinc-50 text-xs font-semibold cursor-pointer">
-                2
-              </button>
-              <button className="h-8 w-8 rounded-lg border border-zinc-200 flex items-center justify-center text-zinc-500 hover:bg-zinc-50 text-xs font-semibold cursor-pointer">
-                3
-              </button>
-              <span className="px-1 text-zinc-400 text-xs">...</span>
-              <button className="h-8 w-8 rounded-lg border border-zinc-200 flex items-center justify-center text-zinc-500 hover:bg-zinc-50 text-xs font-semibold cursor-pointer">
-                12
-              </button>
-              <button className="h-8 w-8 rounded-lg border border-zinc-200 flex items-center justify-center text-zinc-500 hover:bg-zinc-50 text-xs font-semibold cursor-pointer">
-                &gt;
+              <button onClick={resetFilters} className="text-emerald-800 underline font-bold cursor-pointer">
+                xóa tất cả bộ lọc
               </button>
             </div>
           )}
@@ -515,14 +608,19 @@ function ProductFilterContent() {
   );
 }
 
+function ProductFilterWrapper() {
+  const searchParams = useSearchParams();
+  const key = `${searchParams.get("skin_type") || ""}-${searchParams.get("concern") || ""}-${searchParams.get("ingredient") || ""}-${searchParams.get("search") || ""}`;
+
+  return (
+    <ProductFilterContent key={key} />
+  );
+}
+
 export default function ProductFilter() {
   return (
-    <Suspense fallback={
-      <div className="flex items-center justify-center min-h-[400px]">
-        <p className="text-sm font-semibold text-emerald-800">Đang tải bộ lọc sản phẩm...</p>
-      </div>
-    }>
-      <ProductFilterContent />
+    <Suspense fallback={<div className="text-xs text-zinc-400 text-center py-12">Đang tải bộ lọc...</div>}>
+      <ProductFilterWrapper />
     </Suspense>
   );
 }

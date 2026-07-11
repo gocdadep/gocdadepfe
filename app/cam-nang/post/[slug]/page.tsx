@@ -1,15 +1,18 @@
 import { Metadata } from "next";
 import Link from "next/link";
+import { Fragment } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import blogsData from "@/data/blogs.json";
 import productsData from "@/data/products.json";
 import ShopeeButton from "@/components/affiliate/ShopeeButton";
+import IngredientCTABlock from "@/components/feature/IngredientCTABlock";
 import { BookOpen, Calendar, ArrowLeft } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
+import type { Blog } from "@/types/product";
 
 export async function generateStaticParams() {
   return blogsData.map((b) => ({
@@ -31,7 +34,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function BlogDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = await params;
-  const blog = blogsData.find((b) => b.slug === resolvedParams.slug);
+  const blog = (blogsData as Blog[]).find((b) => b.slug === resolvedParams.slug);
 
   if (!blog) {
     return (
@@ -50,6 +53,14 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
 
   // Lấy các sản phẩm liên quan từ relatedProductIds
   const relatedProducts = productsData.filter((p) => blog.relatedProductIds.includes(p.id));
+
+  // Build URL bộ lọc từ concerns và skin_types của blog
+  const buildFilterUrl = () => {
+    const params = new URLSearchParams();
+    if (blog.concerns?.[0]) params.set("concern", blog.concerns[0]);
+    if (blog.target_skin_types?.[0]) params.set("skin_type", blog.target_skin_types[0]);
+    return `/danh-muc-san-pham?${params.toString()}`;
+  };
 
   return (
     <div className="min-h-screen bg-white text-zinc-900 flex flex-col justify-between selection:bg-zinc-100">
@@ -90,11 +101,65 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
             <p className="font-semibold text-zinc-900">{blog.metaDescription}</p>
             {/* Split Markdown đơn giản để render thô */}
             {blog.contentMd.split("\n\n").map((para, i) => {
-              if (para.startsWith("# ")) return <h1 key={i} className="text-2xl font-bold text-zinc-950 mt-6 mb-3">{para.replace("# ", "")}</h1>;
-              if (para.startsWith("## ")) return <h2 key={i} className="text-xl font-bold text-zinc-950 mt-5 mb-2.5">{para.replace("## ", "")}</h2>;
-              return <p key={i} className="text-sm md:text-base leading-relaxed">{para}</p>;
+              const elements = [];
+              if (para.startsWith("# ")) {
+                elements.push(<h1 key={i} className="text-2xl font-bold text-zinc-950 mt-6 mb-3">{para.replace("# ", "")}</h1>);
+              } else if (para.startsWith("## ")) {
+                elements.push(<h2 key={i} className="text-xl font-bold text-zinc-950 mt-5 mb-2.5">{para.replace("## ", "")}</h2>);
+              } else {
+                elements.push(<p key={i} className="text-sm md:text-base leading-relaxed">{para}</p>);
+              }
+
+              // US-004: Tự động chèn khối gợi ý IngredientCTABlock sau đoạn văn thứ 3 (hoặc index 2)
+              if (i === 2 && blog.tags_ingredients && blog.tags_ingredients.length > 0) {
+                elements.push(
+                  <IngredientCTABlock 
+                    key={`cta-${i}`}
+                    tagIngredientIds={blog.tags_ingredients}
+                    targetSkinTypes={blog.target_skin_types}
+                  />
+                );
+              }
+              return <Fragment key={i}>{elements}</Fragment>;
             })}
           </div>
+
+          {/* Mobile Only: Section "Sản phẩm liên quan" ở cuối bài viết */}
+          {relatedProducts.length > 0 && (
+            <section className="md:hidden mt-10 space-y-4 border-t border-zinc-100 pt-6">
+              <span className="text-[10px] font-bold text-amber-600 uppercase tracking-wider block">
+                Gợi ý dành cho bạn
+              </span>
+              <div className="space-y-3">
+                {relatedProducts.slice(0, 3).map((product) => (
+                  <div key={product.id} className="flex gap-3 items-center p-3 bg-zinc-50/50 border border-zinc-150 rounded-xl">
+                    <div className="w-12 h-12 bg-white rounded-lg overflow-hidden flex-shrink-0 flex items-center justify-center border border-zinc-150">
+                      <Image src={product.image} alt={product.name} width={40} height={40} className="object-contain mix-blend-multiply" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <span className="text-[9px] uppercase font-bold text-zinc-400 block">{product.brand}</span>
+                      <h4 className="text-xs font-bold text-zinc-900 truncate leading-snug">{product.name}</h4>
+                      <span className="text-xs font-extrabold text-orange-600 block mt-0.5">{product.price || "Liên hệ"}</span>
+                    </div>
+                    <ShopeeButton 
+                      url={product.shopeeUrl} 
+                      text="Mua" 
+                      productId={product.id}
+                      productName={product.name}
+                      subId={`blog_mobile_${blog.slug}`}
+                      className="h-8 px-4 text-xs rounded-full font-bold" 
+                    />
+                  </div>
+                ))}
+              </div>
+              <Link
+                href={buildFilterUrl()}
+                className="block w-full text-center py-2.5 border border-emerald-500 text-emerald-650 hover:bg-emerald-50/50 font-bold text-xs rounded-full transition"
+              >
+                Xem thêm sản phẩm liên quan →
+              </Link>
+            </section>
+          )}
         </article>
 
         {/* Cột phải: Sidebar AdSense + Gợi ý Shopee */}
@@ -110,13 +175,15 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
                    data-ad-format="rectangle"></ins>
             </div>
 
-            {/* Hộp sản phẩm liên quan */}
+            {/* Hộp sản phẩm liên quan (Desktop Only) */}
             {relatedProducts.length > 0 && (
-              <Card className="border border-zinc-150 bg-zinc-50/50 shadow-none text-left rounded-xl">
+              <Card className="hidden md:block border border-zinc-150 bg-zinc-50/50 shadow-none text-left rounded-xl">
                 <CardContent className="p-5 space-y-4">
-                  <div className="flex items-center gap-1.5 text-zinc-900 font-bold text-xs uppercase tracking-wider">
-                    <BookOpen className="w-4 h-4 text-emerald-700" />
-                    <span>Sản phẩm liên quan</span>
+                  <div className="flex items-center justify-between text-zinc-900 font-bold text-xs uppercase tracking-wider border-b border-zinc-150 pb-2">
+                    <div className="flex items-center gap-1.5">
+                      <BookOpen className="w-4 h-4 text-emerald-700" />
+                      <span>Sản phẩm liên quan</span>
+                    </div>
                   </div>
                   
                   <div className="space-y-4 divide-y divide-zinc-150">
@@ -133,11 +200,23 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
                         </div>
                         <div className="flex items-center justify-between">
                           <span className="text-[9px] font-bold text-zinc-400 uppercase tracking-wide">Được tài trợ</span>
-                          <ShopeeButton url={product.shopeeUrl} className="h-7 px-3 text-[10px] rounded-md" />
+                          <ShopeeButton 
+                            url={product.shopeeUrl} 
+                            productId={product.id}
+                            productName={product.name}
+                            subId={`blog_sidebar_${blog.slug}`}
+                            className="h-7 px-3 text-[10px] rounded-full font-bold" 
+                          />
                         </div>
                       </div>
                     ))}
                   </div>
+                  <Link
+                    href={buildFilterUrl()}
+                    className="block text-center text-xs text-emerald-700 font-bold hover:underline pt-2 border-t border-zinc-150"
+                  >
+                    Xem tất cả sản phẩm →
+                  </Link>
                 </CardContent>
               </Card>
             )}

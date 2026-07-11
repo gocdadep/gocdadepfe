@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import AdSenseScript from "@/components/AdSenseScript";
 import BottomNavBar from "@/components/BottomNavBar";
+import GA4Provider from "@/components/analytics/GA4Provider";
 import "./globals.css";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -41,6 +43,7 @@ export default function RootLayout({
         {children}
         <BottomNavBar />
         <AdSenseScript />
+        <GA4Provider />
       </body>
     </html>
   );
